@@ -1,5 +1,9 @@
-# Byte-compiled/cache
-__pycache__/
+### Django ###
+*.log
+*.pot
 *.pyc
-#db
+__pycache__/
+local_settings.py
+
+.env
 db.sqlite3
