@@ -3,11 +3,11 @@ from django.db import models
 # Create your models here.
 class Community(models.Model):
 	# id = models.AutoField(primary_key=True) -> Community.pk
-	# man will die internen pks benutzen.
+	# die internen pks benutzen.
 	community_name = models.CharField(blank=False, max_length=32, unique=True)
 
 class Users(models.Model):
-	# man will die internen pks benutzen.
+	# die internen pks benutzen.
 	superuser = models.BooleanField(null=False, default=False)
 	pseudo_name = models.CharField(blank=False, max_length=16, unique=True)
 	created_at = models.DateField(auto_now_add=True)
@@ -18,12 +18,25 @@ class Community_moderator(models.Model):
 	community_id = models.ForeignKey("Community", on_delete=models.CASCADE)
 	admin_id = models.ForeignKey("Users", on_delete=models.CASCADE)
 	#nochmal testen, ob mit foreign key funktioniert.
-#class Articles(models.Model):
-#	community_id = models.Foreignkey("Community", on_delete=models.CASCADE)
-#	article_num = models.AutoField(primary_key=True)
-#	title = models.CharField(blank=False, max_length=128)
-#	author_id = models.Foreignkey(Users, on_delete=models.CASCADE)
-#class Comments(models.Model):
-#	...
-#class Likes():
-#	...
+ 
+class Articles(models.Model):
+	community_id = models.ForeignKey("Community", on_delete=models.CASCADE)
+	article_num = models.AutoField(primary_key=True)
+	title = models.CharField(blank=False, max_length=128)
+	author_id = models.ForeignKey("Users", on_delete=models.CASCADE)
+	pinned = models.BooleanField(null=False, default=False)
+	written_on = models.DateField(auto_now=True)
+	rich_txt = models.TextField(max_length=400, blank=False, default=" ")
+ 
+class Comments(models.Model):
+	community_id = models.ForeignKey("Community", on_delete=models.CASCADE)
+	article_num = models.ForeignKey("Articles", on_delete=models.CASCADE)
+	#comment_id = models.BigAutoField(unique=True) -> Comments.pk
+	user_id = models.ForeignKey("Users.pseudo_name", on_delete=models.CASCADE)
+	written_on = models.DateField(auto_now=True)
+	rich_txt = models.TextField(max_length=100, blank=False, default=" ")
+ 
+class Likes(models.Model):
+	community_id = models.ForeignKey("Community", on_delete=models.CASCADE)
+	article_num = models.ForeignKey("Articles", on_delete=models.CASCADE)
+	user_id = models.ForeignKey("Users", on_delete=models.CASCADE)
