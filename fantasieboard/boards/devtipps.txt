@@ -1,0 +1,17 @@
+"""
+Auskommentierte Komentare oder die Tipps, die für Devs nutzlich sein können
+"""
+"""
+ class Comment(models.Model):
+	article = models.ForeignKey("Articles")
+
+omment_obj = Comment()
+article_obj = Article()
+
+comment_obj.article = article_obj
+comment_obj.article_id = article_obj.pk
+# Beides geht!
+ 
+ """
+ #article_id = models.AutoField(primary_key=True) -> .pk
+ Primary Key ist 'Community.pk'.
