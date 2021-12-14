@@ -15,17 +15,30 @@ class Community(models.Model):
 		return str(self.community_name)
 
 class Users(models.Model):
-	# die internen pks benutzen.
+	"""
+ 	Diese Klasse beinhaltet die Liste von Usern.
+	Der Username ist einzigartig. 
+  	"""
+	
 	superuser = models.BooleanField(null=False, default=False)
 	pseudo_name = models.CharField(blank=False, max_length=16, unique=True)
-	created_at = models.DateField(auto_now_add=True)
+	created_on = models.DateField(auto_now_add=True)
 	mail_address = models.EmailField(max_length=254, blank=False)
-	password = models.CharField(blank=False, max_length=16)
- 
+	password = models.CharField(blank=False, max_length=128) # Muss noch bearbeitet werden
+
+	def __str__(self):
+		return str(self.pseudo_name)
+
 class Community_moderator(models.Model):
+	"""
+	Diese Relationen verbinden Community_Moderator, Community, Users.
+	"""
+
 	community_id = models.ForeignKey("Community", on_delete=models.CASCADE)
 	admin_id = models.ForeignKey("Users", on_delete=models.CASCADE)
 	
+	def __str__(self) -> str:
+		return str(self.community_id)
  
 class Articles(models.Model):
 	community_id = models.ForeignKey("Community", on_delete=models.CASCADE)
