@@ -1,10 +1,18 @@
+""" Model Definitionen für Boards """
 from django.db import models
 
-# Create your models here.
+
 class Community(models.Model):
-	# id = models.AutoField(primary_key=True) -> Community.pk
-	# die internen pks benutzen.
+	"""
+	Diese Klasse beinhaltet die Tabelle der Namen von Communities.
+	Keine redundanten Namen erlaubt.
+	Primary Key ist 'Community.pk'.
+	"""
+
 	community_name = models.CharField(blank=False, max_length=32, unique=True)
+	
+	def __str__(self):
+		return str(self.community_name)
 
 class Users(models.Model):
 	# die internen pks benutzen.
@@ -17,7 +25,7 @@ class Users(models.Model):
 class Community_moderator(models.Model):
 	community_id = models.ForeignKey("Community", on_delete=models.CASCADE)
 	admin_id = models.ForeignKey("Users", on_delete=models.CASCADE)
-	#nochmal testen, ob mit foreign key funktioniert.
+	
  
 class Articles(models.Model):
 	community_id = models.ForeignKey("Community", on_delete=models.CASCADE)
