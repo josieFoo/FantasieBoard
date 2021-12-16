@@ -13,11 +13,12 @@ class Community(models.Model):
 	def __str__(self):
 		return str(self.community_name)
 
+
 class Users(models.Model):
 	"""
  	Diese Klasse beinhaltet die Liste von Usern.
 	Der Username ist einzigartig. 
-	TODO: password sollte gehasht werden oder gar nicht angezeigt werden.
+	TODO: 'password' sollte gehasht werden oder gar nicht angezeigt werden.
   	"""
 	
 	superuser = models.BooleanField(null=False, default=False)
@@ -29,25 +30,26 @@ class Users(models.Model):
 	def __str__(self):
 		return str(self.pseudo_name)
 
+
 class Community_moderator(models.Model):
 	"""
 	'Community_moderator' referenziert 'Users' und 'Community'.
 	Zeigt welcher User welche Community moderiert.
+	TODO: Mehrere Moderatoren für eine Community sollte möglich sein.
 	"""
 
 	community_id = models.ForeignKey("Community", on_delete=models.CASCADE)
 	admin_id = models.ForeignKey("Users", on_delete=models.CASCADE)
 	
 	def __str__(self) -> str:
-		return f"{str(self.admin_id)}, {str(self.community_id)}"
- 
+		return f"{str(self.admin_id)}_{str(self.community_id)}"
+
+
 class Articles(models.Model):
 	"""
-	Beinhaltet die Metadaten über die Beiträge sowie wer, wann, wo geschrieben hat etc.
-	Jeder Beitrag hat 'community_id' und 'article_num' und somit primary key gebildet.
-	Wenn 'pinned=True' dann, wird der Beitrag auf der obererste Zeile gepinnt.
-	TODO: Entweder 'community_id' + 'article_num' als pk oder 
- 	'global_article_id'als pk soll her.
+	Beinhaltet die Daten über die Beiträge sowie wer, wann, wo geschrieben hat etc.
+	Jeder Beitrag hat 'community_id' und primary key.
+	TODO: Wenn 'pinned=True' dann, wird der Beitrag auf der obererste Zeile gepinnt.
 	"""
 	
 	community_id = models.ForeignKey("Community", on_delete=models.CASCADE)
@@ -58,7 +60,8 @@ class Articles(models.Model):
 	rich_txt = models.TextField(max_length=400, blank=False, default=" ")
 	
 	def __str__(self) -> str:
-		return str(self.community_id) + str(self.pk)
+		return f"{str(self.pk)}_{str(self.community_id)}"
+
 
 class Comments(models.Model):
 	"""
@@ -72,11 +75,21 @@ class Comments(models.Model):
 	rich_txt = models.TextField(max_length=100, blank=False, default=" ")
 	
 	def __str__(self):
-		return str(self.pk) + str(self.article_id)
+		return f"{str(self.pk)}_{str(self.article_id)}"
 
- 
+
 class Likes(models.Model):
-	#community_id = models.ForeignKey("Community", on_delete=models.CASCADE)
-	#article_num = models.ForeignKey("Articles", on_delete=models.CASCADE)
+	"""
+ 	Model für Likes-Zähler.
+	TODO: Je ein User für je ein Article ein Like erlaubt. 
+ 		  Redundante Likes verhindern.
+  	"""
+
 	article_id = models.ForeignKey("Articles", on_delete=models.CASCADE)
-	user_id = models.ForeignKey("Users", on_delete=models.CASCADE) 
+	user_id = models.ForeignKey("Users", on_delete=models.CASCADE)
+ 
+	def __str__(self):
+		return f"{str(self.article_id)}_{str(self.user_id)}"
+
+
+"""Ende"""
