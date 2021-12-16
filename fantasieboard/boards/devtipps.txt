@@ -15,3 +15,11 @@ comment_obj.article_id = article_obj.pk
  """
  #article_id = models.AutoField(primary_key=True) -> .pk
  Primary Key ist 'Community.pk'.
+
+ class Comments(models.Model):
+	#community_id = models.ForeignKey("Community", on_delete=models.CASCADE)
+	#comment_id = models.BigAutoField(unique=True) -> Comments.pk
+	article_id = models.ForeignKey("Articles", on_delete=models.CASCADE)
+	user_id = models.ForeignKey("Users", on_delete=models.CASCADE)
+	written_on = models.DateField(auto_now=True)
+	rich_txt = models.TextField(max_length=100, blank=False, default=" ")
