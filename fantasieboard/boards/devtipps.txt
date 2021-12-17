@@ -23,3 +23,41 @@ comment_obj.article_id = article_obj.pk
 	user_id = models.ForeignKey("Users", on_delete=models.CASCADE)
 	written_on = models.DateField(auto_now=True)
 	rich_txt = models.TextField(max_length=100, blank=False, default=" ")
+
+class CriterionManager(models.Manager):
+    """
+    Manages Creation of Criterion Objects
+    Since every Sport Object needs to be rated in every Criterion,
+    when a new Criterion is created, every Sport object needs to be rated for that Criterion.
+    As a default value, -1 is entered so that it can be recognized that no true value is given.
+
+    Docs: https://docs.djangoproject.com/en/3.2/ref/models/instances/#creating-objects
+    """
+
+    def create_criterion(self, **kwargs):
+        """
+        Creates a Criterion Object and Rates every existing Sport with -1
+        """
+        crit = Criterion(**kwargs)
+
+        # Criterion needs to be saved before it can be connected to a sport
+        crit.save()
+
+        for sport in Sport.objects.iterator():
+            sport.rate(crit, -1)
+
+        return crit
+
+class QuestionManager(models.Manager):
+    """
+    Manages Deletion of Question Objects and their Criteria
+    """
+
+    def delete_question(self, pk):
+        """
+        Deletes a Question and the Criterion connected to it
+        """
+
+        question = self.get(pk=pk)
+        question.criterion.delete()
+        question.delete()
