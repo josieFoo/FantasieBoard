@@ -2,6 +2,10 @@
 Auskommentierte Komentare oder die Tipps, die für mich nutzlich sein können
 """
 """
+Concept->DB->Model->View
+"""
+
+"""
  class Comment(models.Model):
 	article = models.ForeignKey("Articles")
 
