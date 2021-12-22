@@ -1,5 +1,5 @@
 """
-Auskommentierte Komentare oder die Tipps, die für Devs nutzlich sein können
+Auskommentierte Komentare oder die Tipps, die für mich nutzlich sein können
 """
 """
  class Comment(models.Model):
@@ -70,3 +70,7 @@ TEMPLATES = [
         'APP_DIRS': True,
 
 add URLPATTERNS in urls.py
+(Concept)	(Django)
+Model		Model
+View		Templates
+Controller	View
