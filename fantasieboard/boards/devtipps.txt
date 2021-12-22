@@ -61,3 +61,12 @@ class QuestionManager(models.Manager):
         question = self.get(pk=pk)
         question.criterion.delete()
         question.delete()
+
+templates path in setting.py 
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+
+add URLPATTERNS in urls.py
