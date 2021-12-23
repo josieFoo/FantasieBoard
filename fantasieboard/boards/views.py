@@ -11,4 +11,14 @@ def home_view(request, *args, **kwargs):
 	return render(request, "index.html", {})
 
 def community_view(request, *args, **kwargs):
-    return HttpResponse("<h1> List of communities </h1>")
+	"""
+	shows a link list of communities
+	"""
+	return HttpResponse("<h1> List of communities </h1>")
+
+def community_create(request, *args, **kwargs):
+	...
+
+def user_create(request, *args, **kwargs):
+	...
+	
