@@ -21,4 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home_view, name='home'),
     path('community/', views.community_view, name='community'),
+    path('community/<str:community_name>', views.community_article, name='community_detail'),
+    
 ]

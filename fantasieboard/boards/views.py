@@ -24,3 +24,16 @@ def community_view(request, *args, **kwargs):
 	}
 
 	return render(request, "community.html", context)
+
+def community_article(request, community_name, **kwargs):
+	"""
+	shows the articles of the community.
+	"""
+	
+	com_db_id = Community.objects.get(community_name = community_name).pk
+	queryset = Articles.objects.filter(community_id = com_db_id)
+	context = {
+		"articles": queryset,
+	}
+	print(queryset)
+	return render(request, "community_detail.html", context)
