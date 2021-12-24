@@ -1,20 +1,24 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-
+from .models import *
 # Create your views here.
 def home_view(request, *args, **kwargs):
 	"""
- 	home controller
- 	routed to community list on click?
-  	"""
+	home controller
+	"""
 	#print(request, args, kwargs)
 	return render(request, "index.html", {})
 
 def community_view(request, *args, **kwargs):
 	"""
-	shows a link list of communities
+	Shows a list of communities which be joined by users.
+	'community.html' extends 'index.html'.
 	"""
-	return HttpResponse("<h1> List of communities </h1>")
+	A=[]
+	for item in ['a', 'b', 'c']:
+		A.append(item)
+	context = {'community_list': A}
+	return render(request, "community.html", context)
 
 def community_create(request, *args, **kwargs):
 	...

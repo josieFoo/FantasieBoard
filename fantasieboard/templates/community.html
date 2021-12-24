@@ -1,0 +1,11 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<ul>
+	{% for community_name in community_list %}
+	<li><a href="">{{ community_name }}</a></li>
+	{% endfor %}	
+</ul>
+
+{% endblock %}
