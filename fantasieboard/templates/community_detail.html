@@ -4,7 +4,10 @@
 
 <ul>
 	{% for article in articles %}
-	<li><a href="/community/{{ article.pk }}">{{ article.title }}</a></li>
+	<li><a href="/community/{{ article.community_id }}/{{ article.pk }}">
+		{{ article.title }}, {{ article.author_id }}, {{article.written_on}}</a>
+	</li>
+	
 	{% endfor %}	
 </ul>
 

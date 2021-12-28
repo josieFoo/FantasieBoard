@@ -1,0 +1,12 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<ul>
+	{% for article in articles %}
+	
+	<p> {{ article.rich_txt }} </p>
+	{% endfor %}	
+</ul>
+
+{% endblock %}

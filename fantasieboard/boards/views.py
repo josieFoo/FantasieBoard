@@ -22,7 +22,6 @@ def community_view(request, *args, **kwargs):
 	context = {
 		"community_list": queryset,
 	}
-
 	return render(request, "community.html", context)
 
 def community_article(request, community_name, **kwargs):
@@ -35,5 +34,20 @@ def community_article(request, community_name, **kwargs):
 	context = {
 		"articles": queryset,
 	}
-	print(queryset)
+	
+	print(request, community_name, kwargs)
 	return render(request, "community_detail.html", context)
+
+def article_view(request, community_name, **kwargs):
+	"""
+	shows the contents of the article.
+	TODO: comments, liker should be shown if exists.
+	"""
+	
+	com_db_id = Community.objects.get(community_name = community_name).pk
+	queryset =  Articles.objects.filter(community_name = com_db_id)
+	context = {
+		"contents": queryset, 
+	}
+	print(request)
+	return render(request, "article_detail.html", context)
