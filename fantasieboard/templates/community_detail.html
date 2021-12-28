@@ -5,9 +5,8 @@
 <ul>
 	{% for article in articles %}
 	<li><a href="/community/{{ article.community_id }}/{{ article.pk }}">
-		{{ article.title }}, {{ article.author_id }}, {{article.written_on}}</a>
+		{{ article.title }}, {{ article.author_id }}, {{article.written_on}}, {{article.pk}}</a>
 	</li>
-	
 	{% endfor %}	
 </ul>
 

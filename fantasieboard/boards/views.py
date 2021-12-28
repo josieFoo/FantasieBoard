@@ -35,19 +35,20 @@ def community_article(request, community_name, **kwargs):
 		"articles": queryset,
 	}
 	
-	print(request, community_name, kwargs)
 	return render(request, "community_detail.html", context)
 
-def article_view(request, community_name, **kwargs):
+def article_view(request, article_pk, **kwargs):
 	"""
 	shows the contents of the article.
 	TODO: comments, liker should be shown if exists.
 	"""
 	
-	com_db_id = Community.objects.get(community_name = community_name).pk
-	queryset =  Articles.objects.filter(community_name = com_db_id)
+	queryset =  Articles.objects.get(id = article_pk)
+	# wir haben ein keyword argument x=y 
+  	# x ist das Feld das wir zugreifen möchten.
+ 	# das y ist die variable die wir von url bekommen hier z.B. 1 
 	context = {
 		"contents": queryset, 
 	}
-	print(request)
+ 
 	return render(request, "article_detail.html", context)
