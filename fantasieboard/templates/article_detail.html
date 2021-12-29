@@ -16,4 +16,10 @@ Comments
 	<br>
 	{% endfor %}
 </ul>
+Likes
+<ul>
+	{% for like in likes %}
+	{{ like.user_id }},
+	{% endfor %}
+</ul>
 {% endblock %}

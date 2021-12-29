@@ -118,9 +118,10 @@ class Likes(models.Model):
 	"""
 	Model für Likes-Zähler.
 	TODO: Je ein User für je ein Article ein Like erlaubt. 
-		  Redundante Likes verhindern.
+		  Redundante Likes verhindern. Jedes Like hat ein unique-ID.
 	"""
 
+	# pk='id'
 	article_id = models.ForeignKey("Articles", on_delete=models.CASCADE)
 	user_id = models.ForeignKey("Users", on_delete=models.CASCADE)
  
