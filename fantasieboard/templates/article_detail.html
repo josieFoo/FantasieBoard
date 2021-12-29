@@ -6,21 +6,20 @@
 <ul>
 	<p>(user)     {{ contents.author_id }}</p>
 	<p>(title)    {{ contents.title }}</p>
+	<p>(date)     {{ contents.written_on }}</p>
 	<p>(contents) {{ contents.rich_txt }} </p>
 	
 </ul>
 <h3>Comments</h3>
 <ul>
 	{% for comment in comments %}
-	<p> (user)     {{ comment.user_id }}, {{comment.written_on}}</p> 
+	<p> (user)     {{ comment.user_id }}, (date) {{comment.written_on}}</p> 
 	<p> (contents) {{ comment.rich_txt }}</p>
 	<br>
 	{% endfor %}
 </ul>
-<h3>Likes</h3>
+<h3>Like(s)</h3>
 <ul>
-	{% for like in likes %}
-	{{ like.user_id }},
-	{% endfor %}
+	{{ likes }}
 </ul>
 {% endblock %}

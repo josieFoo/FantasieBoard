@@ -30,10 +30,12 @@ def community_article(request, community_name, **kwargs):
 	shows the articles of the community.
 	"""
 	
+	h2 = community_name
 	com_db_id = Community.objects.get(community_name = community_name).pk
 	queryset = Articles.objects.filter(community_id = com_db_id)
 	context = {
 		"articles": queryset,
+		"community_name": h2,
 	}
 	
 	return render(request, "community_detail.html", context)
@@ -50,10 +52,14 @@ def article_view(request, article_pk, **kwargs):
 	# das y ist die variable, die wir von url bekommen hier z.B. 1 
 	queryset_comments = Comments.objects.filter(article_id = article_pk)
 	queryset_likes = Likes.objects.filter(article_id = article_pk)
+	comments_count = len(queryset_comments)
+	likes_count = len(queryset_likes)
 	context = {
 		"contents": queryset, 
 		"comments": queryset_comments,
-		"likes": queryset_likes,
+		"comments_num" : comments_count, # nicht angezeigt. Eventuell weiterverwendung möglich.
+		"likers": queryset_likes, # nicht angezeigt. Eventuell weiterverwendung möglich.
+		"likes": likes_count,
 	}
 	
 	return render(request, "article_detail.html", context)
