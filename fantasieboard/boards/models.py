@@ -46,7 +46,7 @@ class Community(models.Model):
 	
 	def add_moderator(self, user: Users):
 		return Community_moderator.objects.create(
-               community_id = self, admin_id = user)
+			   community_id = self, admin_id = user)
 
 	
 class CommunityManager():
@@ -104,7 +104,8 @@ class Comments(models.Model):
 	Ein Kommentar hat einen Autor und den darauf beziehenden Beitrag.
 	"""
 	
-	article_id = models.ForeignKey("Articles", on_delete=models.CASCADE)
+	#pk = 'id'
+	article_id = models.ForeignKey("Articles", on_delete=models.CASCADE) 
 	user_id = models.ForeignKey("Users", on_delete=models.CASCADE)
 	written_on = models.DateField(auto_now=True)
 	rich_txt = models.TextField(max_length=100, blank=False, default=" ")

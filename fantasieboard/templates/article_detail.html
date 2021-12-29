@@ -3,8 +3,16 @@
 {% block content %}
 
 <ul>
-	<p> {{ contents.rich_txt }} </p>
-	<p> </p>
+	<p>user:  {{ contents.author_id }}</p>
+	<p>title: {{ contents.title }}</p>
+	<p>       {{ contents.rich_txt }} </p>
+	
 </ul>
-
+Comments
+<ul>
+	{% for comment in comments %}
+	<p> {{ comment.user_id }}, {{comment.written_on}}</p> 
+	<p> {{ comment.rich_txt }}</p>
+	{% endfor %}
+</ul>
 {% endblock %}

@@ -22,6 +22,7 @@ def community_view(request, *args, **kwargs):
 	context = {
 		"community_list": queryset,
 	}
+ 
 	return render(request, "community.html", context)
 
 def community_article(request, community_name, **kwargs):
@@ -45,10 +46,26 @@ def article_view(request, article_pk, **kwargs):
 	
 	queryset =  Articles.objects.get(id = article_pk)
 	# wir haben ein keyword argument x=y 
-  	# x ist das Feld das wir zugreifen möchten.
- 	# das y ist die variable die wir von url bekommen hier z.B. 1 
+	# x ist das Feld, das wir zugreifen möchten.
+	# das y ist die variable, die wir von url bekommen hier z.B. 1 
+	queryset_comments = Comments.objects.filter(id = article_pk)
 	context = {
 		"contents": queryset, 
+		"comments": queryset_comments,
 	}
- 
+	
 	return render(request, "article_detail.html", context)
+
+#def comment_view(request, article_id, **kwargs):
+#	"""
+#	shows the comments and likers of the article
+#	"""
+#
+#	#db_id = Articles.objects.get(id = article_id).pk
+#	#article_id
+#	queryset = Comments.objects.filter(id = article_id)
+#	context = {
+#		'comments': queryset,
+#	}
+#	print(context)
+#	return render(request, "article_reaction.html", context)

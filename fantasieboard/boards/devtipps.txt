@@ -80,3 +80,19 @@ add URLPATTERNS in urls.py
 Model		Model
 View		Templates
 Controller	View
+
+def article_view(request, article_pk, **kwargs):
+	"""
+	shows the contents of the article.
+	TODO: comments, liker should be shown if exists.
+	"""
+	
+	queryset =  Articles.objects.get(id = article_pk)
+	# wir haben ein keyword argument x=y 
+  	# x ist das Feld das wir zugreifen möchten.
+ 	# das y ist die variable die wir von url bekommen hier z.B. 1 
+	context = {
+		"contents": queryset, 
+	}
+ 
+	return render(request, "article_detail.html", context)
