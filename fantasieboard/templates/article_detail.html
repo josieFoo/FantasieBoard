@@ -1,14 +1,15 @@
 {% extends 'index.html' %}
 
 {% block content %}
-
+<h2>{{ contents.community_id }}</h2>
+<h3>Article</h3>
 <ul>
 	<p>(user)     {{ contents.author_id }}</p>
 	<p>(title)    {{ contents.title }}</p>
 	<p>(contents) {{ contents.rich_txt }} </p>
 	
 </ul>
-Comments
+<h3>Comments</h3>
 <ul>
 	{% for comment in comments %}
 	<p> (user)     {{ comment.user_id }}, {{comment.written_on}}</p> 
@@ -16,7 +17,7 @@ Comments
 	<br>
 	{% endfor %}
 </ul>
-Likes
+<h3>Likes</h3>
 <ul>
 	{% for like in likes %}
 	{{ like.user_id }},
