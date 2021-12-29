@@ -48,7 +48,7 @@ def article_view(request, article_pk, **kwargs):
 	# wir haben ein keyword argument x=y 
 	# x ist das Feld, das wir zugreifen möchten.
 	# das y ist die variable, die wir von url bekommen hier z.B. 1 
-	queryset_comments = Comments.objects.filter(id = article_pk)
+	queryset_comments = Comments.objects.filter(article_id = article_pk)
 	context = {
 		"contents": queryset, 
 		"comments": queryset_comments,
