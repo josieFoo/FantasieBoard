@@ -63,3 +63,11 @@ def article_view(request, article_pk, **kwargs):
 	}
 	
 	return render(request, "article_detail.html", context)
+
+def profile_view(request, *args, **kwargs):
+	"""
+ 	shows user information.
+	TODO: Field for image which will be uploaded by user.
+ 	"""
+	
+	return render(request, "profile.html", kwargs)
