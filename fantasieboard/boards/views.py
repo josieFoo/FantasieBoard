@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import *
-
+from django.contrib.auth.models import User
 
 # Create your views here.
 def home_view(request, *args, **kwargs):
@@ -64,10 +64,20 @@ def article_view(request, article_pk, **kwargs):
 	
 	return render(request, "article_detail.html", context)
 
-def profile_view(request, *args, **kwargs):
+def profile_view(request, username, **kwargs):
 	"""
  	shows user information.
 	TODO: Field for image which will be uploaded by user.
  	"""
 	
-	return render(request, "profile.html", kwargs)
+	queryset_user = Users.objects.get(pseudo_name = username)
+	queryset_article = Articles.objects.filter(author_id = queryset_user)
+	queryset_comment = Comments.objects.filter(user_id = queryset_user)
+	article_count = len(queryset_article)
+	comment_count = len(queryset_comment)
+	context = {
+		"user_profile": queryset_user,
+		"article_count": article_count,
+		"comment_count": comment_count,
+	}
+	return render(request, "profile.html", context)

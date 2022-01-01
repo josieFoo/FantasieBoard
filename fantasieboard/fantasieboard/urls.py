@@ -25,5 +25,5 @@ urlpatterns = [
          views.community_article, name='community_detail'),
     path('community/<str:community_name>/<int:article_pk>', 
          views.article_view, name='article_detail'),
-    path('profile/', views.profile_view, name='profile'),
+    path('profile/<str:username>', views.profile_view, name='profile'),#test
 ]

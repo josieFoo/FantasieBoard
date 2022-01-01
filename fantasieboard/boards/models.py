@@ -4,9 +4,8 @@ from django.db import models
 
 class Users(models.Model):
 	"""
- 	Diese Klasse beinhaltet die Liste von Usern.
-	Der Username ist einzigartig. 
-	TODO: 'password' sollte gehasht werden oder gar nicht angezeigt werden.
+ 	Diese Klasse ist obsolet. Wir ziehen um:
+	'from django.contrib.auth.models import User'
   	"""
 	
 	superuser = models.BooleanField(null=False, default=False)
@@ -30,7 +29,7 @@ class Users(models.Model):
 				for mod in moderators:
 					new_community.add_moderator(mod)
 				return new_community
-		return None
+		return 
 
 
 class Community(models.Model):
