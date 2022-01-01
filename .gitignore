@@ -8,4 +8,4 @@ local_settings.py
 .env
 db.sqlite3
 
-devtipps.txt
+boards/devtipps.txt
