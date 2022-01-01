@@ -96,3 +96,14 @@ def article_view(request, article_pk, **kwargs):
 	}
  
 	return render(request, "article_detail.html", context)
+	
+	"""
+Attributes Listing
+"""
+
+from django.contrib.auth.models import User
+User._meta.get_fields()
+
+from django.contrib.auth.models import User
+user=User.objects.get(id=1)
+print(user.__dict__)
