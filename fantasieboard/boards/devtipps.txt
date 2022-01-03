@@ -6,6 +6,10 @@ Auskommentierte Komentare oder die Tipps, die für mich nutzlich sein können
 """
 Concept->DB->Model->View
 """
+"""
+(venv)
+source /home/josiefoo/projekt2021/FantasieBoard/venv/bin/activate
+"""
 
 """
  class Comment(models.Model):
