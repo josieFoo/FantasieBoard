@@ -1,7 +1,8 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Community, Community_moderator, Articles, Comments,Likes
+from .models import Community, Community_moderator, Articles, Comments, Likes
+
 
 admin.site.register(Community)
 admin.site.register(Community_moderator)
