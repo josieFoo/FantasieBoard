@@ -1,36 +1,52 @@
 """ Model Definitionen für Boards """
 from __future__ import annotations
 from django.db import models
+from django.contrib.auth.models import User
 
-class Users(models.Model):
-	"""
- 	Diese Klasse ist obsolet. Wir ziehen um:
-	'from django.contrib.auth.models import User'
-  	"""
-	
-	superuser = models.BooleanField(null=False, default=False)
-	pseudo_name = models.CharField(blank=False, max_length=16, unique=True)
-	created_on = models.DateField(auto_now_add=True)
-	mail_address = models.EmailField(max_length=254, blank=False)
-	password = models.CharField(blank=False, max_length=128) 
-
-	def __str__(self):
-		return str(self.pseudo_name)
-
-	def createCommunity(self, name: str, moderators: list):
-		"""
-		0. ist der User superuser?
-		1. sollte überprüft werden, ob eine Community mit dem gleichen Namen existiert
-		2. wer die Moderatoren sind.
-  		"""
-		if self.superuser:
-			if not Community.objects.filter(community_name = name).exists():
-				new_community = Community.objects.create(community_name = name)
-				for mod in moderators:
-					new_community.add_moderator(mod)
-				return new_community
-		return 
-
+#class Users(models.Model):
+#	"""
+# 	Diese Klasse ist obsolet. Wir ziehen um:
+#	'from django.contrib.auth.models import User'
+#  	"""
+#	
+#	superuser = models.BooleanField(null=False, default=False)
+#	pseudo_name = models.CharField(blank=False, max_length=16, unique=True)
+#	created_on = models.DateField(auto_now_add=True)
+#	mail_address = models.EmailField(max_length=254, blank=False)
+#	password = models.CharField(blank=False, max_length=128) 
+#
+#	def __str__(self):
+#		return str(self.pseudo_name)
+#
+#	def createCommunity(self, name: str, moderators: list):
+#		"""
+#		0. ist der User superuser?
+#		1. sollte überprüft werden, ob eine Community mit dem gleichen Namen existiert
+#		2. wer die Moderatoren sind.
+#  		"""
+#		if self.superuser:
+#			if not Community.objects.filter(community_name = name).exists():
+#				new_community = Community.objects.create(community_name = name)
+#				for mod in moderators:
+#					new_community.add_moderator(mod)
+#				return new_community
+#		return 
+#
+#class User:
+#	"""
+#	default attributes
+#	"""
+#	id
+#	last_login
+#	is_superuser
+#	username
+#	first_name
+#	last_name
+#	email
+#	is_staff
+#	is_active
+#	date_joined
+#	https://docs.djangoproject.com/en/4.0/ref/contrib/auth/#django.contrib.auth.models.User
 
 class Community(models.Model):
 	"""
@@ -43,7 +59,7 @@ class Community(models.Model):
 	def __str__(self):
 		return str(self.community_name)
 	
-	def add_moderator(self, user: Users):
+	def add_moderator(self, user: User):
 		return Community_moderator.objects.create(
 			   community_id = self, admin_id = user)
 
@@ -64,7 +80,7 @@ class Community_moderator(models.Model):
 	"""
 
 	community_id = models.ForeignKey("Community", on_delete=models.CASCADE)
-	admin_id = models.ForeignKey("Users", on_delete=models.CASCADE)
+	admin_id = models.ForeignKey("User", on_delete=models.CASCADE)
 	
 	def __str__(self) -> str:
 		return f"{str(self.admin_id)}_{str(self.community_id)}"
@@ -88,7 +104,7 @@ class Articles(models.Model):
 	
 	community_id = models.ForeignKey("Community", on_delete=models.CASCADE)
 	title = models.CharField(blank=False, max_length=128)
-	author_id = models.ForeignKey("Users", on_delete=models.CASCADE)
+	author_id = models.ForeignKey("User", on_delete=models.CASCADE)
 	pinned = models.BooleanField(null=False, default=False)
 	written_on = models.DateField(auto_now=True)
 	rich_txt = models.TextField(max_length=400, blank=False, default=" ")
@@ -105,7 +121,7 @@ class Comments(models.Model):
 	
 	#pk = 'id'
 	article_id = models.ForeignKey("Articles", on_delete=models.CASCADE) 
-	user_id = models.ForeignKey("Users", on_delete=models.CASCADE)
+	user_id = models.ForeignKey("User", on_delete=models.CASCADE)
 	written_on = models.DateField(auto_now=True)
 	rich_txt = models.TextField(max_length=100, blank=False, default=" ")
 	
@@ -122,7 +138,7 @@ class Likes(models.Model):
 
 	# pk='id'
 	article_id = models.ForeignKey("Articles", on_delete=models.CASCADE)
-	user_id = models.ForeignKey("Users", on_delete=models.CASCADE)
+	user_id = models.ForeignKey("User", on_delete=models.CASCADE)
  
 	class Meta:
 		unique_together = (('article_id', 'user_id'),)

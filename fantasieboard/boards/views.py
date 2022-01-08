@@ -70,7 +70,7 @@ def profile_view(request, username, **kwargs):
 	TODO: Field for image which will be uploaded by user.
  	"""
 	
-	queryset_user = Users.objects.get(pseudo_name = username)
+	queryset_user = User.objects.get(username = username)
 	queryset_article = Articles.objects.filter(author_id = queryset_user)
 	queryset_comment = Comments.objects.filter(user_id = queryset_user)
 	article_count = len(queryset_article)
