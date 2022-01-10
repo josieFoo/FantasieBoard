@@ -1,8 +1,9 @@
 {% extends 'index.html' %}
 <h3>Profile</h3>
 {% block content %}
-<p> (user)     {{ user_profile.pseudo_name }}, (date) {{user_profile.created_on}}</p>
+<p> (user)     {{ user_profile.username }}, (since) {{user_profile.date_joined}}</p>
 <p>{{ user_profile.mail_address}} </p> 
-<p> Activities {{ article_count }} Article(s)
+<p> (Activities) {{ article_count }} Article(s)
 	           {{ comment_count }} Comment(s)</p>
+<p> (Last login) {{ user_profile.last_login }} </p>
 {% endblock %}
