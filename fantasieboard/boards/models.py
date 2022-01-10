@@ -74,7 +74,7 @@ class UsersManager():
 
 class Community_moderator(models.Model):
 	"""
-	'Community_moderator' referenziert 'Users' und 'Community'.
+	'Community_moderator' referenziert 'User' und 'Community'.
 	Zeigt welcher User welche Community moderiert.
 	TODO: Mehrere Moderatoren für eine Community sollte möglich sein.
 	"""
