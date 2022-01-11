@@ -25,5 +25,8 @@ urlpatterns = [
          views.community_article, name='community_detail'),
     path('community/<str:community_name>/<int:article_pk>', 
          views.article_view, name='article_detail'),
-    path('profile/<str:username>', views.profile_view, name='profile'),#test
+    path('profile/<str:username>', views.profile_view, name='profile'),
+    path('register/', views.register_view, name='register'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
 ]
