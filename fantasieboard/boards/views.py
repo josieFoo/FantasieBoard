@@ -81,3 +81,12 @@ def profile_view(request, username, **kwargs):
 		"comment_count": comment_count,
 	}
 	return render(request, "profile.html", context)
+
+def register_view(request, *args, **kwargs):
+    return render(request, "register.html")
+
+def login_view(request, *args, **kwargs):
+    return render(request, "login.html")
+
+def logout_view(request, *args, **kwargs):
+    return render(request, "logout.html")
