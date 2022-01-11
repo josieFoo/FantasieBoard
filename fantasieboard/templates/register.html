@@ -1,5 +1,10 @@
 {% extends 'index.html' %}
 
 {% block content %}
-register page
+<h3> Register </h3>
+<form method="POST" action="">
+	{% csrf_token %}
+	{{form.as_p}}
+	<input type="submit" name="Register User">
+</form>
 {% endblock %}
