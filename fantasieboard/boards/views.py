@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
 from .models import *
@@ -13,6 +15,7 @@ def home_view(request, *args, **kwargs):
 	will be extended.
 	"""
 
+	username = ""
 	return render(request, "index.html", {})
 
 def community_view(request, *args, **kwargs):
@@ -99,8 +102,12 @@ def register_view(request, *args, **kwargs):
 	if request.method == 'POST':
 		form = RegisterUserForm(request.POST)
 		if form.is_valid():
+			username = form.cleaned_data.get('username')
 			form.save()
-	
+			messages.success(
+				request, "You have successfully registered, " + username + "."
+		 	)
+			return redirect('login')
 	context = {
 		"form": form,
 	}
@@ -108,9 +115,29 @@ def register_view(request, *args, **kwargs):
 	return render(request, "register.html", context)
 
 def login_view(request, *args, **kwargs):
+	"""
+	'/login' calls 'login_view'.
+	'login_view' renders login page.
+	The View gets username and password from the page.
+	"""
+
+	if request.method == 'POST':
+		username = request.POST.get('username')
+		password = request.POST.get('password')
+		user = authenticate(request, username=username, password=password)
+		if user is not None:
+			login(request, user)
+			return redirect('community')
+		else:
+			messages.info(request, "Username or Password is incorrect.")
 	context = {}
-	return render(request, "login.html")
+	return render(request, "login.html", context)
 
 def logout_view(request, *args, **kwargs):
+	"""
+	renders logout page.
+	'logout/' calls 'logout_view'.
+	"""
+	
 	context = {}
 	return render(request, "logout.html")

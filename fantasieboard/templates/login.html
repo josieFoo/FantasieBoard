@@ -1,5 +1,20 @@
 {% extends 'index.html' %}
 
 {% block content %}
-login
+
+<h3>Login</h3>
+<form method="POST" action="">
+	{% csrf_token %}
+	
+	<input type="text" name="username" placeholder="Username" class="form-control">
+	<p></p>
+	<input type="password" name="password" placeholder="Password" class="form-control">
+	<p></p>
+	<input class="btn login_btn" type="submit" value="Login">
+</form>
+
+{% for message in messages %}
+	<p id="messages">{{ message }}</p>
+{% endfor %}
+
 {% endblock %}
