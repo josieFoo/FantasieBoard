@@ -130,6 +130,7 @@ def login_view(request, *args, **kwargs):
 			return redirect('community')
 		else:
 			messages.info(request, "Username or Password is incorrect.")
+
 	context = {}
 	return render(request, "login.html", context)
 
@@ -138,6 +139,9 @@ def logout_view(request, *args, **kwargs):
 	renders logout page.
 	'logout/' calls 'logout_view'.
 	"""
-	
-	context = {}
-	return render(request, "logout.html")
+
+	# username need to be saved before logging out for message on the logout page.
+	username = request.user
+	context = { 'username': username }
+	logout(request)
+	return render(request, "logout.html", context)

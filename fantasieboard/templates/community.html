@@ -2,6 +2,7 @@
 
 {% block content %}
 
+<p>Hello, {{ request.user }}!</p>
 <ul>
 	{% for community_name in community_list %}
 	<li><a href="/community/{{ community_name }}">{{ community_name }}</a></li>
