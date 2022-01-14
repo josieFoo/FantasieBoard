@@ -106,7 +106,7 @@ class Articles(models.Model):
 	title = models.CharField(blank=False, max_length=128)
 	author_id = models.ForeignKey(User, on_delete=models.CASCADE)
 	pinned = models.BooleanField(null=False, default=False)
-	written_on = models.DateField(auto_now=True)
+	written_on = models.DateTimeField(auto_now=True)
 	rich_txt = models.TextField(max_length=400, blank=False, default=" ")
 	
 	def __str__(self) -> str:
@@ -122,7 +122,7 @@ class Comments(models.Model):
 	#pk = 'id'
 	article_id = models.ForeignKey("Articles", on_delete=models.CASCADE) 
 	user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-	written_on = models.DateField(auto_now=True)
+	written_on = models.DateTimeField(auto_now=True)
 	rich_txt = models.TextField(max_length=100, blank=False, default=" ")
 	
 	def __str__(self):

@@ -43,7 +43,7 @@ def community_article(request, community_name, **kwargs):
 
 	h2 = community_name
 	com_db_id = Community.objects.get(community_name = community_name).pk
-	queryset = Articles.objects.filter(community_id = com_db_id)
+	queryset = Articles.objects.filter(community_id = com_db_id).order_by("-written_on")
 	context = {
 		"articles": queryset,
 		"community_name": h2,
@@ -61,7 +61,7 @@ def article_view(request, article_pk, **kwargs):
 	# wir haben ein keyword argument x=y
 	# x ist das Feld, das wir zugreifen möchten.
 	# das y ist die variable, die wir von url bekommen hier z.B. 1
-	queryset_comments = Comments.objects.filter(article_id = article_pk)
+	queryset_comments = Comments.objects.filter(article_id = article_pk).order_by("-written_on")
 	queryset_likes = Likes.objects.filter(article_id = article_pk)
 	comments_count = len(queryset_comments)
 	likes_count = len(queryset_likes)
