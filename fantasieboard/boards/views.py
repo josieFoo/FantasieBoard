@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 from .models import *
@@ -15,20 +16,24 @@ def home_view(request, *args, **kwargs):
 	will be extended.
 	"""
 
-	username = ""
-	return render(request, "index.html", {})
+	if request.user.is_authenticated:
+		return redirect('community')
+	else:
+		return render(request, "index.html", {})
 
 def community_view(request, *args, **kwargs):
 	"""
 	Shows a list of communities which can be joined by users.
 	'community.html' extends 'index.html'.
 	"""
-
+	
 	queryset = Community.objects.all()
+	anonymoususer = "a nameless Hero"
 	context = {
 		"community_list": queryset,
+		"anonymoususer" : anonymoususer,
 	}
-
+	
 	return render(request, "community.html", context)
 
 def community_article(request, community_name, **kwargs):
@@ -48,8 +53,8 @@ def community_article(request, community_name, **kwargs):
 
 def article_view(request, article_pk, **kwargs):
 	"""
-	shows the contents of the article.
-	TODO: comments, liker should be shown if exists.
+	shows the contents of the article and its
+	comments and likes if exist.
 	"""
 
 	queryset =  Articles.objects.get(id = article_pk)
@@ -70,6 +75,7 @@ def article_view(request, article_pk, **kwargs):
 
 	return render(request, "article_detail.html", context)
 
+@login_required(login_url='login')
 def profile_view(request, username, **kwargs):
 	"""
  	shows user information.
@@ -134,13 +140,15 @@ def login_view(request, *args, **kwargs):
 	context = {}
 	return render(request, "login.html", context)
 
+@login_required(login_url='login')
 def logout_view(request, *args, **kwargs):
 	"""
 	renders logout page.
 	'logout/' calls 'logout_view'.
+	Username need to be saved before logging out for 
+	themessage on the logout page.
 	"""
 
-	# username need to be saved before logging out for message on the logout page.
 	username = request.user
 	context = { 'username': username }
 	logout(request)
