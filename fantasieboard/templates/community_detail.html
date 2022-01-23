@@ -1,6 +1,7 @@
 {% extends 'index.html' %}
 
 {% block content %}
+
 <h2>{{ community_name }}</h2>
 <h3>Articles</h3>
 <ul>
@@ -10,5 +11,7 @@
 	</li>
 	{% endfor %}	
 </ul>
+
+<a href="/community/write">|write|</a>
 
 {% endblock %}
