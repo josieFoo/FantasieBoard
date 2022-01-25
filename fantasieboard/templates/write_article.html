@@ -1,0 +1,11 @@
+{% extends 'community_detail.html' %}
+{% load static %}
+{% block content %}
+
+<form action="" method="POST">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<input type="submit" name="write">
+</form>
+
+{% endblock %}

@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 from .models import *
-from .forms import RegisterUserForm
+from .forms import RegisterUserForm, ArticleForm
 
 def home_view(request, *args, **kwargs):
 	"""
@@ -153,3 +153,13 @@ def logout_view(request, *args, **kwargs):
 	context = { 'username': username }
 	logout(request)
 	return render(request, "logout.html", context)
+
+@login_required(login_url='login')
+def write_article(request, *args, **kwargs):
+    username = request.user
+    
+    form = ArticleForm()
+    context={ 
+             'form': form,
+             }
+    return render(request, "write_article.html", context)
