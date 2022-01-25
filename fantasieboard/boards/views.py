@@ -155,11 +155,26 @@ def logout_view(request, *args, **kwargs):
 	return render(request, "logout.html", context)
 
 @login_required(login_url='login')
-def write_article(request, *args, **kwargs):
-    username = request.user
-    
-    form = ArticleForm()
-    context={ 
-             'form': form,
-             }
-    return render(request, "write_article.html", context)
+def write_article(request, community_name, **kwargs):
+	"""
+	renders article writing page.
+	"""
+
+	username = request.user
+	community_name = community_name
+	form = ArticleForm()
+	
+	if request.method == 'POST':
+		#print(request.POST)
+		#print(request)
+		form = ArticleForm(request.POST)
+		if form.is_valid():
+			form.save()
+			return redirect('community_detail')
+	
+	context={ 
+			'form': form,
+			'username': username,
+			'community_name': community_name,
+			}
+	return render(request, "write_article.html", context)

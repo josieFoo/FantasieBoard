@@ -22,4 +22,4 @@ class ArticleForm(ModelForm):
 	
 	class Meta:
 		model = Articles
-		fields = '__all__' # testing
+		fields = '__all__' #['title', 'rich_txt']
