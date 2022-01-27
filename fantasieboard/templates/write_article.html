@@ -1,12 +1,12 @@
-{% extends 'community_detail.html' %}
+{% extends 'index.html' %}
 {% load static %}
 {% block content %}
 
 <form action="" method="POST">
 	{% csrf_token %}
 	{{ form.as_p }}
-	{{ username }}
-	{{ community_name }}
+	<!--{{ username }}
+	{{ community_name }}-->
 	<input type="submit" name="write">
 </form>
 

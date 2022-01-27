@@ -159,22 +159,24 @@ def write_article(request, community_name, **kwargs):
 	"""
 	renders article writing page.
 	"""
-
+ 
 	username = request.user
 	community_name = community_name
 	form = ArticleForm()
-	
-	if request.method == 'POST':
-		#print(request.POST)
-		#print(request)
-		form = ArticleForm(request.POST)
-		if form.is_valid():
-			form.save()
-			return redirect('community_detail')
-	
+ 
 	context={ 
 			'form': form,
 			'username': username,
 			'community_name': community_name,
 			}
+
+	if request.method == 'POST':
+		#print(request.POST)
+		#print(request)
+		form = ArticleForm(request.POST)
+		if form.is_valid():
+			article_object = form.save()
+			return redirect('community')
+			#return redirect('community_detail')
+			#return redirect('article_detail')
 	return render(request, "write_article.html", context)

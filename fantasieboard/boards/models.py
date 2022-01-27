@@ -2,6 +2,7 @@
 from __future__ import annotations
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 #class Users(models.Model):
 #	"""
@@ -109,6 +110,9 @@ class Articles(models.Model):
 	written_on = models.DateTimeField(auto_now=True)
 	rich_txt = models.TextField(max_length=400, blank=False, default=" ")
 	
+	def get_absolute_url(self):
+		return reverse("community_detail", kwargs={"community_id": self.community_id})
+
 	def __str__(self) -> str:
 		return f"{str(self.pk)}_{str(self.community_id)}_{str(self.title)}_{str(self.author_id)}"
 
