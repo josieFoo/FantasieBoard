@@ -164,24 +164,20 @@ def write_article(request, community_name, **kwargs):
 	"""
 	renders article writing page.
 	"""
- 
+
 	username = request.user
-	form = ArticleForm(initial={ 'community_id': community_name, 'author_id': username })
- 
+	community = Community.objects.get(community_name = community_name)
+	# Es sollte ein Objekt sein.
+	form = ArticleForm(initial={ 'community_id': community, 'author_id': username }) 
 	context={ 
 			'form': form,
 			}
 
 	if request.method == 'POST':
-		#print(request.POST)
-		#print(request)
 		form = ArticleForm(request.POST)
 		if form.is_valid():
 			article_object = form.save()
-			return redirect('community')
-			#return redirect('community_detail')
-			#return redirect('article_detail')
-			#return redirect(article_object.get_absolute_url())
+			return redirect(article_object.get_absolute_url())
 
 	return render(request, "write_article.html", context)
 
@@ -199,7 +195,7 @@ def edit_article(request, article_pk, **kwargs):
 		form = ArticleForm(request.POST, instance=article)
 		if form.is_valid():
 			form.save()
-			return redirect('community') # redirect working not correctly 
+			return redirect(article.get_absolute_url()) 
 
 	context = { 'form':form, 'article':article, 'community':community }
 
@@ -214,9 +210,9 @@ def delete_article(request, article_pk, **kwargs):
 
 	article = Articles.objects.get(id=article_pk)
 	if request.method == 'POST':
+		community_obj = article.community_id
 		article.delete()
-		return redirect('/')
-
+		return redirect(community_obj.get_absolute_url())
 
 	context = {'article': article}
 	return render(request, 'delete_article.html', context)

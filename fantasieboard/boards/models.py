@@ -63,7 +63,11 @@ class Community(models.Model):
 	def add_moderator(self, user: User):
 		return Community_moderator.objects.create(
 			   community_id = self, admin_id = user)
-
+	def get_absolute_url(self):
+		# Grammatik (schei...) Ich fasse ein Objekt nicht str!
+		return reverse('community_detail', 
+				 kwargs={"community_name": self.community_name,
+						 })
 	
 class CommunityManager():
 	...
@@ -95,7 +99,7 @@ class Community_moderator(models.Model):
 class ModeratorManager():
 	...
 
- 
+
 class Articles(models.Model):
 	"""
 	Beinhaltet die Daten über die Beiträge sowie wer, wann, wo geschrieben hat etc.
@@ -111,7 +115,13 @@ class Articles(models.Model):
 	rich_txt = models.TextField(max_length=400, blank=False, default=" ")
 	
 	def get_absolute_url(self):
-		return reverse('article_detail', kwargs={"community_id": self.community_id})
+		
+		return reverse('article_detail', 
+					   kwargs={
+					   "community_name": self.community_id.community_name,
+					   "article_pk": self.pk
+					          }
+					   )
 
 	def __str__(self) -> str:
 		return f"{str(self.community_id)}_{str(self.title)}"
