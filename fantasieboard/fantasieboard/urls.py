@@ -21,9 +21,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home_view, name='home'),
     path('community/', views.community_view, name='community'),
-    path('community/<str:community_name>', 
+    path('community/<str:community_name>/', 
          views.community_article, name='community_detail'),
-    path('community/<str:community_name>/<int:article_pk>', 
+    path('community/<str:community_name>/<int:article_pk>/', 
          views.article_view, name='article_detail'),
     
     path('profile/<str:username>', views.profile_view, name='profile'),
@@ -31,5 +31,8 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     
-    path('community/<str:community_name>/write/', views.write_article, name='write'),
+    path('community/<str:community_name>/write/', views.write_article, name='write_article'),
+    path('community/<str:community_name>/<int:article_pk>/edit/', views.edit_article, name='edit_article'),
+    path('community/<str:community_name>/<int:article_pk>/delete/', views.delete_article, name='delete_article'),
+    
 ]

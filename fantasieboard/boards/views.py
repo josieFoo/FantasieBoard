@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.template import context
 
 # Create your views here.
 from .models import *
@@ -58,6 +59,8 @@ def article_view(request, article_pk, **kwargs):
 	"""
 
 	queryset =  Articles.objects.get(id = article_pk)
+	article_id = article_pk
+	community_id = queryset.community_id
 	# wir haben ein keyword argument x=y
 	# x ist das Feld, das wir zugreifen möchten.
 	# das y ist die variable, die wir von url bekommen hier z.B. 1
@@ -71,6 +74,8 @@ def article_view(request, article_pk, **kwargs):
 		"comments_num" : comments_count, # nicht angezeigt. Eventuell weiterverwendung möglich.
 		"likers": queryset_likes, # nicht angezeigt. Eventuell weiterverwendung möglich.
 		"likes": likes_count,
+		"article_pk": article_id,
+		"community_name": community_id,
 	}
 
 	return render(request, "article_detail.html", context)
@@ -161,13 +166,10 @@ def write_article(request, community_name, **kwargs):
 	"""
  
 	username = request.user
-	community_name = community_name
-	form = ArticleForm()
+	form = ArticleForm(initial={ 'community_id': community_name, 'author_id': username })
  
 	context={ 
 			'form': form,
-			'username': username,
-			'community_name': community_name,
 			}
 
 	if request.method == 'POST':
@@ -179,4 +181,42 @@ def write_article(request, community_name, **kwargs):
 			return redirect('community')
 			#return redirect('community_detail')
 			#return redirect('article_detail')
+			#return redirect(article_object.get_absolute_url())
+
 	return render(request, "write_article.html", context)
+
+@login_required(login_url='login')
+def edit_article(request, article_pk, **kwargs):
+	"""
+	rendert edit windows
+	"""
+
+	article = Articles.objects.get(id=article_pk)
+	form = ArticleForm(instance=article)
+	community = article.community_id
+	
+	if request.method == 'POST':
+		form = ArticleForm(request.POST, instance=article)
+		if form.is_valid():
+			form.save()
+			return redirect('community') # redirect working not correctly 
+
+	context = { 'form':form, 'article':article, 'community':community }
+
+	return render(request, 'write_article.html', context)
+
+@login_required(login_url='login')
+def delete_article(request, article_pk, **kwargs):
+	""" 
+ 	assures whether the article should be deleted.
+	On confirm the article will be deleted.
+ 	"""
+
+	article = Articles.objects.get(id=article_pk)
+	if request.method == 'POST':
+		article.delete()
+		return redirect('/')
+
+
+	context = {'article': article}
+	return render(request, 'delete_article.html', context)

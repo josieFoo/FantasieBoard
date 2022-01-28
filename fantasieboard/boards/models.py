@@ -111,10 +111,10 @@ class Articles(models.Model):
 	rich_txt = models.TextField(max_length=400, blank=False, default=" ")
 	
 	def get_absolute_url(self):
-		return reverse("community_detail", kwargs={"community_id": self.community_id})
+		return reverse('article_detail', kwargs={"community_id": self.community_id})
 
 	def __str__(self) -> str:
-		return f"{str(self.pk)}_{str(self.community_id)}_{str(self.title)}_{str(self.author_id)}"
+		return f"{str(self.community_id)}_{str(self.title)}"
 
 
 class Comments(models.Model):
