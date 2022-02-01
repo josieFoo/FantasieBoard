@@ -19,7 +19,12 @@
 
 <h3>Comments</h3>
 <a href="/community/{{ community_name }}/{{ article_pk }}/reply">Reply</a>
+<form action="" method="POST">
+	{% csrf_token %}
+	{{ form.as_p }}
 
+	<input type="submit" name="write">
+</form>
 <ul>
 	{% for comment in comments %}
 	<p> (user)     {{ comment.user_id }}, (date) {{comment.written_on}}</p> 

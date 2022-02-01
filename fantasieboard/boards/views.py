@@ -1,3 +1,4 @@
+from urllib import request
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
@@ -9,7 +10,7 @@ from django.template import context
 
 # Create your views here.
 from .models import *
-from .forms import RegisterUserForm, ArticleForm
+from .forms import CommentForm, RegisterUserForm, ArticleForm
 
 def home_view(request, *args, **kwargs):
 	"""
@@ -216,3 +217,36 @@ def delete_article(request, article_pk, **kwargs):
 
 	context = {'article': article}
 	return render(request, 'delete_article.html', context)
+
+@login_required(login_url='login')
+def reply_article(request, article_pk, **kwargs):
+	"""
+	renders form for a comment.
+	"""
+	
+	queryset =  Articles.objects.get(id = article_pk)
+	article_id = article_pk
+	community_id = queryset.community_id
+	queryset_comments = Comments.objects.filter(article_id = article_pk).order_by("-written_on")
+	queryset_likes = Likes.objects.filter(article_id = article_pk)
+	comments_count = len(queryset_comments)
+	likes_count = len(queryset_likes)
+
+	form = CommentForm(initial={ 'article_id': queryset, 'user_id': request.user})
+	context = {
+     	"contents": queryset,
+		"comments": queryset_comments,
+		"comments_num" : comments_count, # nicht angezeigt. Eventuell weiterverwendung möglich.
+		"likers": queryset_likes, # nicht angezeigt. Eventuell weiterverwendung möglich.
+		"likes": likes_count,
+		"article_pk": article_id,
+		"community_name": community_id,
+		"form": form,
+  	}
+
+	if request.method == 'POST':
+		form = CommentForm(request.POST)
+		if form.is_valid():
+			form.save()
+			return redirect(queryset.get_absolute_url())
+	return render(request, "reply.html", context)

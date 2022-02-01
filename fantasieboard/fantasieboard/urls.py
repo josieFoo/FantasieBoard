@@ -34,5 +34,5 @@ urlpatterns = [
     path('community/<str:community_name>/write/', views.write_article, name='write_article'),
     path('community/<str:community_name>/<int:article_pk>/edit/', views.edit_article, name='edit_article'),
     path('community/<str:community_name>/<int:article_pk>/delete/', views.delete_article, name='delete_article'),
-    
+    path('community/<str:community_name>/<int:article_pk>/reply/', views.reply_article, name='reply_article'),
 ]
