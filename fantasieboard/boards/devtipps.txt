@@ -111,3 +111,62 @@ User._meta.get_fields()
 from django.contrib.auth.models import User
 user=User.objects.get(id=1)
 print(user.__dict__)
+
+"""
+decorator, redirect
+"""
+
+views.py
+@login_required(login_url='login')
+def delete_article(request, article_pk, **kwargs):
+	""" 
+ 	assures whether the article should be deleted.
+	On confirm the article will be deleted.
+ 	"""
+
+	article = Articles.objects.get(id=article_pk)
+	community = article.community_id #object!
+
+	if request.method == 'POST':
+		article.delete()
+		return redirect(community.get_absolute_url())
+
+	context = {
+    		'article': article, 
+			'community_name': community,
+    }
+	return render(request, 'delete_article.html', context)
+
+models.py
+class Community(models.Model):
+	"""
+	Diese Klasse beinhaltet die Tabelle der Namen von Communities.
+	Keine redundanten Namen erlaubt. (.pk) implizit erstellt.
+	"""
+
+	community_name = models.CharField(blank=False, max_length=32, unique=True)	
+ 
+	def __str__(self):
+		return str(self.community_name)
+	
+	def add_moderator(self, user: User):
+		return Community_moderator.objects.create(
+			   community_id = self, admin_id = user)
+	def get_absolute_url(self):
+		# Grammatik (schei...) Ich fasse ein Objekt nicht str!
+		return reverse('community_detail', 
+				 kwargs={"community_name": self.community_name,
+						 })
+delete_article.html
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+
+<p>You are deleting the Article "{{ article }}".</p>
+<form method="POST">
+	{% csrf_token %}
+	<input class="btn" type="Submit" name="Confirm" value="Yes">
+	<p></p>
+	<a class="btn" href="/community/{{ community_name }}" >No</a>
+</form>
+{% endblock %}
