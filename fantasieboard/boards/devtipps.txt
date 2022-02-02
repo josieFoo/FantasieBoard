@@ -170,3 +170,20 @@ delete_article.html
 	<a class="btn" href="/community/{{ community_name }}" >No</a>
 </form>
 {% endblock %}
+
+"""
+object or str? Be sure!
+"""
+{'article': <Articles: Apex Legends_new season>, 'comments': <QuerySet [<Comments: 30_Apex Legends_new season>, <Comments: 25_Apex Legends_new season>, <Comments: 21_Apex Legends_new season>, <Comments: 20_Apex Legends_new season>]>, 'community_name': <Community: Apex Legends>, 'article_pk': 6, 'comment': <Comments: 30_Apex Legends_new season>}
+...
+        article = Articles.objects.get(pk=article_pk)
+	comments = Comments.objects.filter(article_id = article_pk).order_by("-written_on")
+	comment = Comments.objects.get(pk=comment_pk)
+	community_name = article.community_id
+	context ={ 'article': article,
+		   'comments': comments,
+		   'community_name': community_name,
+		   'article_pk': article.pk,
+		   'comment': comment,
+	}
+...
