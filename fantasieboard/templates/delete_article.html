@@ -7,7 +7,7 @@
 	{% csrf_token %}
 	<input class="btn" type="Submit" name="Confirm" value="Yes">
 	<p></p>
-	<a class="btn" href="{% url 'community' %}" >No</a>
+	<a class="btn" href="/community/{{ community_name }}" >No</a>
 </form>
 <!--<style>
 	.btn{  

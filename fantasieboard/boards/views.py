@@ -210,12 +210,16 @@ def delete_article(request, article_pk, **kwargs):
  	"""
 
 	article = Articles.objects.get(id=article_pk)
-	if request.method == 'POST':
-		community_obj = article.community_id
-		article.delete()
-		return redirect(community_obj.get_absolute_url())
+	community = article.community_id
 
-	context = {'article': article}
+	if request.method == 'POST':
+		article.delete()
+		return redirect(community.get_absolute_url())
+
+	context = {
+    		'article': article, 
+			'community_name': community,
+    }
 	return render(request, 'delete_article.html', context)
 
 @login_required(login_url='login')
