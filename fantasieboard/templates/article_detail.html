@@ -22,9 +22,16 @@
 
 <ul>
 	{% for comment in comments %}
+	<!--{{comment.pk}}-->
 	<p> (user)     {{ comment.user_id }}, (date) {{comment.written_on}}</p> 
-	<p> (contents) {{ comment.rich_txt }}</p>
+	<p> (contents) {{ comment.rich_txt }} </p>
+	{% if request.user == comment.user_id %}
+	<a href="">|Edit|</a>
+	<a href="/community/{{ community_name }}/{{ article_pk }}/delete_comment/{{ comment.pk }}/">|Delete|</a>
+	<br><br>
+	{% else %}
 	<br>
+	{% endif %}
 	{% endfor %}
 </ul>
 

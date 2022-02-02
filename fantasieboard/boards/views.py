@@ -219,6 +219,7 @@ def delete_article(request, article_pk, **kwargs):
 	context = {
     		'article': article, 
 			'community_name': community,
+			'article_pk': article_pk,
     }
 	return render(request, 'delete_article.html', context)
 
@@ -254,3 +255,24 @@ def reply_article(request, article_pk, **kwargs):
 			form.save()
 			return redirect(queryset.get_absolute_url())
 	return render(request, "reply.html", context)
+
+@login_required(login_url='login')
+def delete_comment(request, article_pk, comment_pk, **kwargs):
+	"""
+	delete comment
+	"""
+
+	article = Articles.objects.get(pk=article_pk)
+	comments = Comments.objects.filter(article_id = article_pk).order_by("-written_on")
+	comment = Comments.objects.get(pk=comment_pk)
+	community_name = article.community_id
+	context ={ 'article': article,
+			   'comments': comments,
+			   'community_name': community_name,
+			   'article_pk': article.pk,
+			   'comment': comment,
+	}
+	if request.method == 'POST':
+		comment.delete()
+		return redirect(article.get_absolute_url())
+	return render(request, 'delete_comment.html', context)

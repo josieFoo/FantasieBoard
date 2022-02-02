@@ -2,7 +2,11 @@
 {% load static %}
 {% block content %}
 
-<p>You are deleting the Article "{{ article }}".</p>
+<p>You are deleting your comment on "{{ article }}".</p>
+
+<p>Your comment: </p>
+<p>{{ comment.rich_txt }}</p>
+
 <form method="POST">
 	{% csrf_token %}
 	<input class="btn" type="Submit" name="Confirm" value="Yes">
