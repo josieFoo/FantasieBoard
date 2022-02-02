@@ -24,10 +24,10 @@ class ArticleForm(ModelForm):
 	class Meta:
 		model = Articles
 		fields = '__all__' #['title', 'rich_txt']
-		#widgets = {
-		#	'community_id': forms.HiddenInput(),
-		#	'author_id': forms.HiddenInput(),
-		#}
+		widgets = {
+			'community_id': forms.HiddenInput(),
+			'author_id': forms.HiddenInput(),
+		}
 
 class CommentForm(ModelForm):
     """ 
