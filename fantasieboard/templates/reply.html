@@ -21,8 +21,10 @@
 <a href="/community/{{ community_name }}/{{ article_pk }}/reply">Reply</a>
 <form action="" method="POST">
 	{% csrf_token %}
-	{{ form.as_p }}
-
+	
+	{{ form.article_id.as_hidden }}
+	{{ form.user_id.as_hidden}}
+	{{ form.rich_txt }}
 	<input type="submit" name="write">
 </form>
 <ul>
