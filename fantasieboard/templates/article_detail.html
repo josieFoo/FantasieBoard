@@ -18,15 +18,16 @@
 {% endif %}
 
 <h3>Comments</h3>
-<a href="/community/{{ community_name }}/{{ article_pk }}/reply">Reply</a>
-
+<a href="/community/{{ community_name }}/{{ article_pk }}/reply">|Reply|</a>
+<br>
+<p></p>
 <ul>
 	{% for comment in comments %}
 	<!--{{comment.pk}}-->
 	<p> (user)     {{ comment.user_id }}, (date) {{comment.written_on}}</p> 
 	<p> (contents) {{ comment.rich_txt }} </p>
 	{% if request.user == comment.user_id %}
-	<a href="">|Edit|</a>
+	<a href="/community/{{ community_name }}/{{ article_pk }}/edit_comment/{{ comment.pk }}/">|Edit|</a>
 	<a href="/community/{{ community_name }}/{{ article_pk }}/delete_comment/{{ comment.pk }}/">|Delete|</a>
 	<br><br>
 	{% else %}

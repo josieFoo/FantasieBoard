@@ -266,13 +266,53 @@ def delete_comment(request, article_pk, comment_pk, **kwargs):
 	comments = Comments.objects.filter(article_id = article_pk).order_by("-written_on")
 	comment = Comments.objects.get(pk=comment_pk)
 	community_name = article.community_id
+
 	context ={ 'article': article,
 			   'comments': comments,
 			   'community_name': community_name,
 			   'article_pk': article.pk,
 			   'comment': comment,
 	}
+
 	if request.method == 'POST':
 		comment.delete()
 		return redirect(article.get_absolute_url())
+
 	return render(request, 'delete_comment.html', context)
+
+@login_required(login_url='login')
+def edit_comment(request, article_pk, comment_pk, **kwargs):
+	""""
+	edit comment
+	"""
+	
+	queryset =  Articles.objects.get(id = article_pk)
+	article_id = article_pk
+	community_id = queryset.community_id
+	queryset_comments = Comments.objects.filter(article_id = article_pk).order_by("-written_on")
+	queryset_likes = Likes.objects.filter(article_id = article_pk)
+	comments_count = len(queryset_comments)
+	likes_count = len(queryset_likes)
+	comment = Comments.objects.get(pk = comment_pk)
+
+	form = CommentForm(instance=comment)
+	
+	if request.method == 'POST':
+		form = CommentForm(request.POST, instance=comment)
+		if form.is_valid():
+			form.save()
+			return redirect(queryset.get_absolute_url())
+
+	context = {
+		"contents": queryset,
+		"comments": queryset_comments,
+		"comments_num" : comments_count, # nicht angezeigt. Eventuell weiterverwendung möglich.
+		"likers": queryset_likes, # nicht angezeigt. Eventuell weiterverwendung möglich.
+		"likes": likes_count,
+		"article_pk": article_id,
+		"community_name": community_id,
+		"form": form,
+		"comment_pk":comment_pk
+	}
+	
+	return render(request, 'reply.html', context)

@@ -37,5 +37,6 @@ urlpatterns = [
     path('community/<str:community_name>/<int:article_pk>/reply/', views.reply_article, name='reply_article'),
     path('community/<str:community_name>/<int:article_pk>/delete_comment/<int:comment_pk>/', 
          views.delete_comment, name='delete_comment'),
-    
+    path('community/<str:community_name>/<int:article_pk>/edit_comment/<int:comment_pk>/',
+         views.edit_comment, name='edit_comment'),
 ]
