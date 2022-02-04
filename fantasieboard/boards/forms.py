@@ -23,11 +23,11 @@ class ArticleForm(ModelForm):
 	
 	class Meta:
 		model = Articles
-		fields = '__all__' #['title', 'rich_txt']
-		widgets = {
-			'community_id': forms.HiddenInput(),
-			'author_id': forms.HiddenInput(),
-		}
+		fields = ['title', 'rich_txt']
+		# widgets = {
+		# 	'community_id': forms.HiddenInput(),
+		# 	'author_id': forms.HiddenInput(),
+		# }
 
 class CommentForm(ModelForm):
     """ 
@@ -36,7 +36,7 @@ class CommentForm(ModelForm):
     
     class Meta:
         model = Comments
-        fields = '__all__' # ['rich_txt']
-        widgets = { 'article_id': forms.HiddenInput(), 
-                    'user_id': forms.HiddenInput(), 
-        }
+        fields = ['rich_txt']
+        # widgets = { 'article_id': forms.HiddenInput(), 
+        #             'user_id': forms.HiddenInput(), 
+        # }

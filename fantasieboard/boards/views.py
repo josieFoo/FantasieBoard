@@ -169,13 +169,15 @@ def write_article(request, community_name, **kwargs):
 	username = request.user
 	community = Community.objects.get(community_name = community_name)
 	# Es sollte ein Objekt sein.
-	form = ArticleForm(initial={ 'community_id': community, 'author_id': username }) 
+	form = ArticleForm() 
 	context={ 
 			'form': form,
 			}
 
 	if request.method == 'POST':
-		form = ArticleForm(request.POST)
+		article = Articles.objects.create(community_id = community, author_id=username)
+		article.save()
+		form = ArticleForm(request.POST, instance=article)
 		if form.is_valid():
 			article_object = form.save()
 			return redirect(article_object.get_absolute_url())
@@ -237,7 +239,7 @@ def reply_article(request, article_pk, **kwargs):
 	comments_count = len(queryset_comments)
 	likes_count = len(queryset_likes)
 
-	form = CommentForm(initial={ 'article_id': queryset, 'user_id': request.user})
+	form = CommentForm()
 	context = {
      	"contents": queryset,
 		"comments": queryset_comments,
@@ -247,10 +249,12 @@ def reply_article(request, article_pk, **kwargs):
 		"article_pk": article_id,
 		"community_name": community_id,
 		"form": form,
-  	}
+	}
 
-	if request.method == 'POST':
-		form = CommentForm(request.POST)
+	if request.method == 'POST': # object not str!!!
+		comment = Comments.objects.create(article_id=queryset, user_id=request.user)
+		comment.save()
+		form = CommentForm(request.POST, instance=comment)
 		if form.is_valid():
 			form.save()
 			return redirect(queryset.get_absolute_url())

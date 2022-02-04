@@ -187,3 +187,37 @@ object or str? Be sure!
 		   'comment': comment,
 	}
 ...
+@login_required(login_url='login')
+def write_article(request, community_name, **kwargs):
+	"""
+	renders article writing page.
+	"""
+
+	username = request.user
+	community = Community.objects.get(community_name = community_name)
+	# Es sollte ein Objekt sein.
+	form = ArticleForm(initial={ 'community_id': community, 'author_id': username }) 
+	context={ 
+			'form': form,
+			}
+
+	if request.method == 'POST':
+		form = ArticleForm(request.POST)
+		if form.is_valid():
+			article_object = form.save()
+			return redirect(article_object.get_absolute_url())
+
+	return render(request, "write_article.html", context)
+
+	"""
+class ArticleForm(ModelForm):
+	form for writing a article.
+	"""
+	
+	class Meta:
+		model = Articles
+		fields = '__all__' #['title', 'rich_txt']
+		widgets = {
+			'community_id': forms.HiddenInput(),
+			'author_id': forms.HiddenInput(),
+	}

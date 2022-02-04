@@ -22,8 +22,6 @@
 <form action="" method="POST">
 	{% csrf_token %}
 	
-	{{ form.article_id.as_hidden }}
-	{{ form.user_id.as_hidden}}
 	{{ form.as_p }}
 	<input type="submit" name="write">
 </form>

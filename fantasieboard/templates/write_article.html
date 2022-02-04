@@ -5,8 +5,6 @@
 <form action="" method="POST">
 	{% csrf_token %}
 	
-	{{ form.community_id.as_hidden }}
-	{{ form.author_id.as_hidden}}
 	{{ form.as_p }}
 	
 	<input type="submit" name="write">

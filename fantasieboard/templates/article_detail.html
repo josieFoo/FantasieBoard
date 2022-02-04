@@ -23,7 +23,7 @@
 <p></p>
 <ul>
 	{% for comment in comments %}
-	<!--{{comment.pk}}-->
+	
 	<p> (user)     {{ comment.user_id }}, (date) {{comment.written_on}}</p> 
 	<p> (contents) {{ comment.rich_txt }} </p>
 	{% if request.user == comment.user_id %}
