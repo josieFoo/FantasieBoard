@@ -12,13 +12,13 @@
 </ul>
 
 {% if request.user == contents.author_id %}
-<a href="/community/{{ community_name }}/{{ article_pk }}/edit">|Edit|</a>
-<a href="/community/{{ community_name }}/{{ article_pk }}/delete">|Delete|</a>
+<a href="/community/{{ community_name }}/{{ article_pk }}/edit" class="btn btn-primary">Edit</a>
+<a href="/community/{{ community_name }}/{{ article_pk }}/delete" class="btn btn-primary">Delete</a>
 {% else %}
 {% endif %}
 
 <h3>Comments</h3>
-<a href="/community/{{ community_name }}/{{ article_pk }}/reply">|Reply|</a>
+<a href="/community/{{ community_name }}/{{ article_pk }}/reply" class="btn btn-primary">Reply</a>
 <br>
 <p></p>
 <ul>
@@ -27,8 +27,8 @@
 	<p> (user)     {{ comment.user_id }}, (date) {{comment.written_on}}</p> 
 	<p> (contents) {{ comment.rich_txt }} </p>
 	{% if request.user == comment.user_id %}
-	<a href="/community/{{ community_name }}/{{ article_pk }}/edit_comment/{{ comment.pk }}/">|Edit|</a>
-	<a href="/community/{{ community_name }}/{{ article_pk }}/delete_comment/{{ comment.pk }}/">|Delete|</a>
+	<a href="/community/{{ community_name }}/{{ article_pk }}/edit_comment/{{ comment.pk }}/" class="btn btn-primary">Edit</a>
+	<a href="/community/{{ community_name }}/{{ article_pk }}/delete_comment/{{ comment.pk }}/" class="btn btn-primary">Delete</a>
 	<br><br>
 	{% else %}
 	<br>

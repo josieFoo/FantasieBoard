@@ -2,6 +2,12 @@
 <html>
 <head>
 	<title> FantasieBoard </title>
+	{% load bootstrap5 %}
+	{% bootstrap_css %}
+	{% bootstrap_javascript %}
+	{% bootstrap_messages %}
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'button.css' %}">
 </head>
 <body>
 	<h1> Welcome on Board, Heroes! </h1>
@@ -10,21 +16,21 @@
 
 	<p> We have here Heroes' shelter. </p>
 		<p>Join your community. </p>
-		<a href="/login" id="login">login here</a>
+		<a href="/login" id="login" class="btn btn-primary">login here</a>
 		<p>You don't have an account?</p>
-		<a href="/register" id="register">register here</a>
+		<a href="/register" id="register" class="btn btn-primary">register here</a>
 	
 	{% endblock %}
 
 	<p></p>
 	{% if request.user.is_authenticated %}
-	<a href="/" id="homepage">|home|</a>
-	<a href="/community" id ="community">|community|</a>
-	<a href="/profile/{{ request.user }}">|your profile| </a>
-	<a href="{% url 'logout' %}">|Logout|</a>
+	<a href="/" id="homepage" class="btn btn-primary">home</a>
+	<a href="/community" id ="community" class="btn btn-primary">community</a>
+	<a href="/profile/{{ request.user }}" class="btn btn-primary">your profile</a>
+	<a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
 	{% else %}
-	<a href="/" id="homepage">|home|</a>
-	<a href="/community" id ="community">|community|</a>
+	<a href="/" id="homepage" class="btn btn-primary">home</a>
+	<a href="/community" id ="community" class="btn btn-primary">community</a>
 	{% endif %}
 
 </body>

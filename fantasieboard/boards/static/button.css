@@ -1,0 +1,35 @@
+a.btn {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	text-decoration: none;
+	font-size:1rem;
+	color:rgb(19, 18, 18);
+	background-color:rgb(232, 241, 248);
+	padding:10px 10px 10px 10px;
+	margin:10px;
+	display:inline-block;
+	border: 1px;
+	outline: 1px;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: 0.5s;
+}
+
+input.btn{
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	text-decoration: none;
+	font-size:1rem;
+	color:rgb(19, 18, 18);
+	background-color:rgb(232, 241, 248);
+	padding:10px 10px 10px 10px;
+	margin:10px;
+	display:inline-block;
+	border: 1px;
+	outline: 1px;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: 0.5s;
+}

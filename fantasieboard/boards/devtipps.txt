@@ -221,3 +221,28 @@ class ArticleForm(ModelForm):
 			'community_id': forms.HiddenInput(),
 			'author_id': forms.HiddenInput(),
 	}
+
+	{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+
+<p>You are deleting the Article "{{ article }}".</p>
+<form method="POST">
+	{% csrf_token %}
+	<input class="btn" type="Submit" name="Confirm" value="Yes">
+	<p></p>
+	<a class="btn" href="{% url 'community' %}" >No</a>
+</form>
+<!--<style>
+	.btn{  
+		text-decoration: none;
+		font-size:2rem;
+		color:rgb(0, 0, 0);
+		padding:10px 20px 10px 20px;
+		margin:20px;
+		display:inline-block;
+		border-radius: 10px;
+		text-shadow: 0px -2px rgba(0, 0, 0, 0.44);
+		}
+</style> -->
+{% endblock %}

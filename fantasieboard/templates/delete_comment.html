@@ -9,9 +9,9 @@
 
 <form method="POST">
 	{% csrf_token %}
-	<input class="btn" type="Submit" name="Confirm" value="Yes">
+	<input class="btn btn-danger" type="Submit" name="Confirm" value="Yes">
 	<p></p>
-	<a class="btn" href="/community/{{ community_name }}/{{ article_pk }}" >No</a>
+	<a class="btn btn-warning" href="/community/{{ community_name }}/{{ article_pk }}" >No</a>
 </form>
 
 {% endblock %}
