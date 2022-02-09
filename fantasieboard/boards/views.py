@@ -10,7 +10,8 @@ from django.template import context
 
 # Create your views here.
 from .models import *
-from .forms import CommentForm, RegisterUserForm, ArticleForm
+from .forms import CommentForm, RegisterUserForm 
+from .forms import ArticleForm, ArticleUserForm
 
 def home_view(request, *args, **kwargs):
 	"""
@@ -46,9 +47,13 @@ def community_article(request, community_name, **kwargs):
 	h2 = community_name
 	com_db_id = Community.objects.get(community_name = community_name).pk
 	queryset = Articles.objects.filter(community_id = com_db_id).order_by("-written_on")
+	unpinned_set = queryset.filter(pinned = False)
+	pinned_set = queryset.filter(pinned = True)
 	context = {
 		"articles": queryset,
 		"community_name": h2,
+		"pinned_articles": pinned_set,
+		"unpinned_articles": unpinned_set,
 	}
 
 	return render(request, "community_detail.html", context)
@@ -168,20 +173,33 @@ def write_article(request, community_name, **kwargs):
 
 	username = request.user
 	community = Community.objects.get(community_name = community_name)
+	staff = username.is_staff
 	# Es sollte ein Objekt sein.
-	form = ArticleForm() 
+	if staff:
+		form = ArticleForm()
+	else:
+		form = ArticleUserForm()
+	
+	if request.method == 'POST':
+		if staff:
+			article = Articles.objects.create(community_id = community, author_id=username)
+			article.save()
+			form = ArticleForm(request.POST, instance=article)
+			if form.is_valid():
+				article_object = form.save()
+				return redirect(article_object.get_absolute_url())
+		else:
+			article = Articles.objects.create(community_id = community, author_id=username)
+			article.save()
+			form = ArticleUserForm(request.POST, instance=article)
+			if form.is_valid():
+				article_obj = form.save()
+				return redirect(article_obj.get_absolute_url())
+
 	context={ 
 			'form': form,
+			'staff': staff,
 			}
-
-	if request.method == 'POST':
-		article = Articles.objects.create(community_id = community, author_id=username)
-		article.save()
-		form = ArticleForm(request.POST, instance=article)
-		if form.is_valid():
-			article_object = form.save()
-			return redirect(article_object.get_absolute_url())
-
 	return render(request, "write_article.html", context)
 
 @login_required(login_url='login')
@@ -191,14 +209,25 @@ def edit_article(request, article_pk, **kwargs):
 	"""
 
 	article = Articles.objects.get(id=article_pk)
-	form = ArticleForm(instance=article)
 	community = article.community_id
+	staff = request.user.is_staff
 	
+	if staff:
+		form = ArticleForm(instance=article)
+	else:
+		form = ArticleUserForm(instance=article)
+ 
 	if request.method == 'POST':
-		form = ArticleForm(request.POST, instance=article)
-		if form.is_valid():
-			form.save()
-			return redirect(article.get_absolute_url()) 
+		if staff:
+			form = ArticleForm(request.POST, instance=article)
+			if form.is_valid():
+				form.save()
+				return redirect(article.get_absolute_url()) 
+		else:
+			form = ArticleUserForm(request.POST, instance=article)
+			if form.is_valid():
+				form.save()
+				return redirect(article.get_absolute_url())
 
 	context = { 'form':form, 'article':article, 'community':community }
 

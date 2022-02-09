@@ -23,11 +23,19 @@ class ArticleForm(ModelForm):
 	
 	class Meta:
 		model = Articles
+		fields = ['title', 'pinned', 'rich_txt']
+
+class ArticleUserForm(ModelForm):
+	"""
+	form for writing a article. for non-staff
+	"""
+	
+	class Meta:
+		model = Articles
 		fields = ['title', 'rich_txt']
-		# widgets = {
-		# 	'community_id': forms.HiddenInput(),
-		# 	'author_id': forms.HiddenInput(),
-		# }
+		widgets = {
+			'pinned': forms.HiddenInput(),
+		}
 
 class CommentForm(ModelForm):
     """ 
@@ -37,6 +45,3 @@ class CommentForm(ModelForm):
     class Meta:
         model = Comments
         fields = ['rich_txt']
-        # widgets = { 'article_id': forms.HiddenInput(), 
-        #             'user_id': forms.HiddenInput(), 
-        # }

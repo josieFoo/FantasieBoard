@@ -10,11 +10,18 @@
 <h2>{{ community_name }}</h2>
 <h3>Articles</h3>
 <ul>
-	{% for article in articles %}
+	{% for article in pinned_articles %}
 	<li><a href="/community/{{ article.community_id }}/{{ article.pk }}">
 		{{ article.title }}, {{ article.author_id }}, {{article.written_on}}</a>
 	</li>
 	{% endfor %}	
+</ul>
+<ul>
+	{% for article in unpinned_articles %}
+	<li><a href="/community/{{ article.community_id }}/{{ article.pk }}">
+		{{ article.title }}, {{ article.author_id }}, {{article.written_on}}</a>
+	</li>
+	{% endfor %}
 </ul>
 
 <a href="/community/{{ community_name }}/write" class="btn btn-primary">Write</a>
