@@ -27,7 +27,7 @@
 	<a href="/" id="homepage" class="btn btn-primary">home</a>
 	<a href="/community" id ="community" class="btn btn-primary">community</a>
 	<a href="/profile/{{ request.user }}" class="btn btn-primary">your profile</a>
-	<a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+	<a href="/logout" class="btn btn-primary">Logout</a>
 	{% else %}
 	<a href="/" id="homepage" class="btn btn-primary">home</a>
 	<a href="/community" id ="community" class="btn btn-primary">community</a>
