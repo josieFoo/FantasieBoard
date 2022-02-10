@@ -18,11 +18,13 @@ def home_view(request, *args, **kwargs):
 	home controller.
 	will be extended.
 	"""
-
+ 
+	community_list = Community.objects.all()
+	context = { "community_list": community_list, }
 	if request.user.is_authenticated:
 		return redirect('community')
 	else:
-		return render(request, "index.html", {})
+		return render(request, "index.html", context)
 
 def community_view(request, *args, **kwargs):
 	"""
@@ -44,9 +46,10 @@ def community_article(request, community_name, **kwargs):
 	shows the articles of the community.
 	"""
 
+	community_list = Community.objects.all()
 	h2 = community_name
-	com_db_id = Community.objects.get(community_name = community_name).pk
-	queryset = Articles.objects.filter(community_id = com_db_id).order_by("-written_on")
+	community_pk = Community.objects.get(community_name = community_name).pk
+	queryset = Articles.objects.filter(community_id = community_pk).order_by("-written_on")
 	unpinned_set = queryset.filter(pinned = False)
 	pinned_set = queryset.filter(pinned = True)
 	context = {
@@ -54,6 +57,7 @@ def community_article(request, community_name, **kwargs):
 		"community_name": h2,
 		"pinned_articles": pinned_set,
 		"unpinned_articles": unpinned_set,
+		"community_list": community_list,
 	}
 
 	return render(request, "community_detail.html", context)
@@ -64,6 +68,7 @@ def article_view(request, article_pk, **kwargs):
 	comments and likes if exist.
 	"""
 
+	community_list = Community.objects.all()
 	queryset =  Articles.objects.get(id = article_pk)
 	article_id = article_pk
 	community_id = queryset.community_id
@@ -75,6 +80,7 @@ def article_view(request, article_pk, **kwargs):
 	comments_count = len(queryset_comments)
 	likes_count = len(queryset_likes)
 	context = {
+		"community_list": community_list,
 		"contents": queryset,
 		"comments": queryset_comments,
 		"comments_num" : comments_count, # nicht angezeigt. Eventuell weiterverwendung möglich.
@@ -93,12 +99,14 @@ def profile_view(request, username, **kwargs):
 	TODO: Field for image which will be uploaded by user.
  	"""
 
+	community_list = Community.objects.all()
 	queryset_user = User.objects.get(username = username)
 	queryset_article = Articles.objects.filter(author_id = queryset_user)
 	queryset_comment = Comments.objects.filter(user_id = queryset_user)
 	article_count = len(queryset_article)
 	comment_count = len(queryset_comment)
 	context = {
+		"community_list": community_list,
 		"user_profile": queryset_user,
 		"article_count": article_count,
 		"comment_count": comment_count,
@@ -115,6 +123,7 @@ def register_view(request, *args, **kwargs):
  	the form will be checked and saved.
 	"""
 
+	community_list = Community.objects.all()
 	form = RegisterUserForm()
 	if request.method == 'POST':
 		form = RegisterUserForm(request.POST)
@@ -127,6 +136,7 @@ def register_view(request, *args, **kwargs):
 			return redirect('login')
 	context = {
 		"form": form,
+		"community_list": community_list,
 	}
 
 	return render(request, "register.html", context)
@@ -138,6 +148,7 @@ def login_view(request, *args, **kwargs):
 	The View gets username and password from the page.
 	"""
 
+	community_list = Community.objects.all()
 	if request.method == 'POST':
 		username = request.POST.get('username')
 		password = request.POST.get('password')
@@ -148,7 +159,7 @@ def login_view(request, *args, **kwargs):
 		else:
 			messages.info(request, "Username or Password is incorrect.")
 
-	context = {}
+	context = {"community_list": community_list,}
 	return render(request, "login.html", context)
 
 @login_required(login_url='login')
@@ -161,7 +172,10 @@ def logout_view(request, *args, **kwargs):
 	"""
 
 	username = request.user
-	context = { 'username': username }
+	community_list = Community.objects.all()
+	context = { "username": username,
+				"community_list": community_list,
+    }
 	logout(request)
 	return render(request, "logout.html", context)
 
@@ -172,6 +186,7 @@ def write_article(request, community_name, **kwargs):
 	"""
 
 	username = request.user
+	community_list = Community.objects.all()
 	community = Community.objects.get(community_name = community_name)
 	staff = username.is_staff
 	# Es sollte ein Objekt sein.
@@ -200,6 +215,7 @@ def write_article(request, community_name, **kwargs):
 			'form': form,
 			'staff': staff,
 			'community_name': community_name,
+			"community_list": community_list,
 			}
 	return render(request, "write_article.html", context)
 
@@ -209,6 +225,7 @@ def edit_article(request, article_pk, **kwargs):
 	rendert edit windows
 	"""
 
+	community_list = Community.objects.all()
 	article = Articles.objects.get(id=article_pk)
 	community = article.community_id
 	staff = request.user.is_staff
@@ -230,7 +247,11 @@ def edit_article(request, article_pk, **kwargs):
 				form.save()
 				return redirect(article.get_absolute_url())
 
-	context = { 'form':form, 'article':article, 'community_name':community }
+	context = { 'form':form, 
+				'article':article, 
+				'community_name':community,
+				"community_list": community_list,
+	}
 
 	return render(request, 'write_article.html', context)
 
@@ -241,6 +262,7 @@ def delete_article(request, article_pk, **kwargs):
 	On confirm the article will be deleted.
  	"""
 
+	community_list = Community.objects.all()
 	article = Articles.objects.get(id=article_pk)
 	community = article.community_id
 
@@ -252,6 +274,7 @@ def delete_article(request, article_pk, **kwargs):
     		'article': article, 
 			'community_name': community,
 			'article_pk': article_pk,
+			"community_list": community_list,
     }
 	return render(request, 'delete_article.html', context)
 
@@ -262,6 +285,7 @@ def reply_article(request, article_pk, **kwargs):
 	"""
 	
 	queryset =  Articles.objects.get(id = article_pk)
+	community_list = Community.objects.all()
 	article_id = article_pk
 	community_id = queryset.community_id
 	queryset_comments = Comments.objects.filter(article_id = article_pk).order_by("-written_on")
@@ -271,7 +295,8 @@ def reply_article(request, article_pk, **kwargs):
 
 	form = CommentForm()
 	context = {
-     	"contents": queryset,
+		"community_list": community_list,
+		"contents": queryset,
 		"comments": queryset_comments,
 		"comments_num" : comments_count, # nicht angezeigt. Eventuell weiterverwendung möglich.
 		"likers": queryset_likes, # nicht angezeigt. Eventuell weiterverwendung möglich.
@@ -296,16 +321,19 @@ def delete_comment(request, article_pk, comment_pk, **kwargs):
 	delete comment
 	"""
 
+	community_list = Community.objects.all()
 	article = Articles.objects.get(pk=article_pk)
 	comments = Comments.objects.filter(article_id = article_pk).order_by("-written_on")
 	comment = Comments.objects.get(pk=comment_pk)
 	community_name = article.community_id
 
-	context ={ 'article': article,
-			   'comments': comments,
-			   'community_name': community_name,
-			   'article_pk': article.pk,
-			   'comment': comment,
+	context ={ 
+				'article': article,
+				'comments': comments,
+				'community_name': community_name,
+				'article_pk': article.pk,
+				'comment': comment,
+				"community_list": community_list,
 	}
 
 	if request.method == 'POST':
@@ -320,6 +348,7 @@ def edit_comment(request, article_pk, comment_pk, **kwargs):
 	edit comment
 	"""
 	
+	community_list = Community.objects.all()
 	queryset =  Articles.objects.get(id = article_pk)
 	article_id = article_pk
 	community_id = queryset.community_id
@@ -346,7 +375,8 @@ def edit_comment(request, article_pk, comment_pk, **kwargs):
 		"article_pk": article_id,
 		"community_name": community_id,
 		"form": form,
-		"comment_pk":comment_pk
+		"comment_pk":comment_pk,
+		"community_list": community_list,
 	}
 	
 	return render(request, 'reply.html', context)

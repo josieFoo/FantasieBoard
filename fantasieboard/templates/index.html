@@ -25,13 +25,20 @@
 	<p></p>
 	{% if request.user.is_authenticated %}
 	<a href="/" id="homepage" class="btn btn-primary">home</a>
-	<a href="/community" id ="community" class="btn btn-primary">community</a>
 	<a href="/profile/{{ request.user }}" class="btn btn-primary">your profile</a>
 	<a href="/logout" class="btn btn-primary">Logout</a>
 	{% else %}
-	<a href="/" id="homepage" class="btn btn-primary">home</a>
-	<a href="/community" id ="community" class="btn btn-primary">community</a>
+	<a href="/" id="homepage" class="btn btn-primary">home</a>	
 	{% endif %}
+
+	<div class="dropdown">
+		<button class="dropbtn">community</button>
+		<div class="dropdown-content">
+			{% for community_name in community_list %}
+			<a href="/community/{{ community_name }}">{{ community_name }}</a>
+			{% endfor %}
+		</div>
+	</div>
 
 </body>
 </html>
