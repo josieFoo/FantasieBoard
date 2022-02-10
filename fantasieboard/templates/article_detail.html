@@ -11,6 +11,8 @@
 	
 </ul>
 
+<a href="/community/{{ community_name }}/" class="btn btn-primary">To the List</a>
+<a href="/community/{{ community_name }}/write" class="btn btn-primary">Write</a>
 {% if request.user == contents.author_id %}
 <a href="/community/{{ community_name }}/{{ article_pk }}/edit" class="btn btn-primary">Edit</a>
 <a href="/community/{{ community_name }}/{{ article_pk }}/delete" class="btn btn-primary">Delete</a>

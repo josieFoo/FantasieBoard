@@ -199,6 +199,7 @@ def write_article(request, community_name, **kwargs):
 	context={ 
 			'form': form,
 			'staff': staff,
+			'community_name': community_name,
 			}
 	return render(request, "write_article.html", context)
 
@@ -229,7 +230,7 @@ def edit_article(request, article_pk, **kwargs):
 				form.save()
 				return redirect(article.get_absolute_url())
 
-	context = { 'form':form, 'article':article, 'community':community }
+	context = { 'form':form, 'article':article, 'community_name':community }
 
 	return render(request, 'write_article.html', context)
 
