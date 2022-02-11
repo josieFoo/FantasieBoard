@@ -7,7 +7,7 @@
 	<p>(user)     {{ contents.author_id }}</p>
 	<p>(title)    {{ contents.title }}</p>
 	<p>(date)     {{ contents.written_on }}</p>
-	<p>(contents) {{ contents.rich_txt }} </p>
+	<p>(contents)<pre>{{ contents.rich_txt }}</pre></p>
 	
 </ul>
 
@@ -16,18 +16,19 @@
 {% if request.user == contents.author_id %}
 <a href="/community/{{ community_name }}/{{ article_pk }}/edit" class="btn btn-primary">Edit</a>
 <a href="/community/{{ community_name }}/{{ article_pk }}/delete" class="btn btn-primary">Delete</a>
+<button class="btn btn-primary">Like</button>
 {% else %}
 {% endif %}
 
 <h3>Comments</h3>
-<a href="/community/{{ community_name }}/{{ article_pk }}/reply" class="btn btn-primary">Reply</a>
+<a href="/community/{{ community_name }}/{{ article_pk }}/reply#comment" class="btn btn-primary">Reply</a>
 <br>
 <p></p>
 <ul>
 	{% for comment in comments %}
 	
 	<p> (user)     {{ comment.user_id }}, (date) {{comment.written_on}}</p> 
-	<p> (contents) {{ comment.rich_txt }} </p>
+	<p> (contents) <pre>{{ comment.rich_txt }}</pre></p>
 	{% if request.user == comment.user_id %}
 	<a href="/community/{{ community_name }}/{{ article_pk }}/edit_comment/{{ comment.pk }}/" class="btn btn-primary">Edit</a>
 	<a href="/community/{{ community_name }}/{{ article_pk }}/delete_comment/{{ comment.pk }}/" class="btn btn-primary">Delete</a>

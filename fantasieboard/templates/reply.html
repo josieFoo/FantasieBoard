@@ -7,7 +7,7 @@
 	<p>(user)     {{ contents.author_id }}</p>
 	<p>(title)    {{ contents.title }}</p>
 	<p>(date)     {{ contents.written_on }}</p>
-	<p>(contents) {{ contents.rich_txt }} </p>
+	<p>(contents) <pre>{{ contents.rich_txt }}</pre> </p>
 	
 </ul>
 
@@ -17,7 +17,7 @@
 {% else %}
 {% endif %}
 
-<h3>Comments</h3>
+<h3 id="comment">Comments</h3>
 
 <form action="" method="POST">
 	{% csrf_token %}
@@ -29,7 +29,7 @@
 <ul>
 	{% for comment in comments %}
 	<p> (user)     {{ comment.user_id }}, (date) {{comment.written_on}}</p> 
-	<p> (contents) {{ comment.rich_txt }}</p>
+	<p> (contents) <pre>{{ comment.rich_txt }}</pre></p>
 	<br>
 	{% endfor %}
 </ul>
