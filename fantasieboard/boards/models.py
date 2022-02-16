@@ -153,9 +153,17 @@ class Likes(models.Model):
 	# pk='id'
 	article_id = models.ForeignKey("Articles", on_delete=models.CASCADE)
 	user_id = models.ForeignKey(User, on_delete=models.CASCADE)
- 
+	likes = ('article_id', 'user_id')
+
 	class Meta:
 		unique_together = (('article_id', 'user_id'),)
+
+	def total_likes(self):
+		""" 
+  		counts likes 
+		for test purposes
+		"""
+		return self.likes.count()
 
 	def __str__(self):
 		return f"{str(self.user_id)} likes {str(self.article_id)}"

@@ -8,15 +8,20 @@
 	<p>(title)    {{ contents.title }}</p>
 	<p>(date)     {{ contents.written_on }}</p>
 	<p>(contents)<pre>{{ contents.rich_txt }}</pre></p>
-	
+	<div style="text-align: left;margin-top:1%;">
+		<button class="btn btn-primary">Like</button>
+	</div>
 </ul>
-
+<h3>Like(s)</h3>
+<ul>
+	{{ likes }}
+</ul>
 <a href="/community/{{ community_name }}/" class="btn btn-primary">To the List</a>
 <a href="/community/{{ community_name }}/write" class="btn btn-primary">Write</a>
 {% if request.user == contents.author_id %}
 <a href="/community/{{ community_name }}/{{ article_pk }}/edit" class="btn btn-primary">Edit</a>
 <a href="/community/{{ community_name }}/{{ article_pk }}/delete" class="btn btn-primary">Delete</a>
-<button class="btn btn-primary">Like</button>
+
 {% else %}
 {% endif %}
 
@@ -39,8 +44,4 @@
 	{% endfor %}
 </ul>
 
-<h3>Like(s)</h3>
-<ul>
-	{{ likes }}
-</ul>
 {% endblock %}
