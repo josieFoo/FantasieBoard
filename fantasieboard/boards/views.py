@@ -380,3 +380,28 @@ def edit_comment(request, article_pk, comment_pk, **kwargs):
 	}
 	
 	return render(request, 'reply.html', context)
+
+def like_button(request, article_pk, **kwargs):
+	community_list = Community.objects.all()
+	queryset =  Articles.objects.get(id = article_pk)
+	article_id = article_pk
+	community_id = queryset.community_id
+	# wir haben ein keyword argument x=y
+	# x ist das Feld, das wir zugreifen möchten.
+	# das y ist die variable, die wir von url bekommen hier z.B. 1
+	queryset_comments = Comments.objects.filter(article_id = article_pk).order_by("-written_on")
+	queryset_likes = Likes.objects.filter(article_id = article_pk)
+	comments_count = len(queryset_comments)
+	likes_count = len(queryset_likes)
+	context = {
+		"community_list": community_list,
+		"contents": queryset,
+		"comments": queryset_comments,
+		"comments_num" : comments_count, # nicht angezeigt. Eventuell weiterverwendung möglich.
+		"likers": queryset_likes, # nicht angezeigt. Eventuell weiterverwendung möglich.
+		"likes": likes_count,
+		"article_pk": article_id,
+		"community_name": community_id,
+	}
+
+	return render(request, "article_detail.html", context)

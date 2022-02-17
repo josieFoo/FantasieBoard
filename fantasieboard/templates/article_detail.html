@@ -8,14 +8,30 @@
 	<p>(title)    {{ contents.title }}</p>
 	<p>(date)     {{ contents.written_on }}</p>
 	<p>(contents)<pre>{{ contents.rich_txt }}</pre></p>
+
 	<div style="text-align: left;margin-top:1%;">
-		<button class="btn btn-primary">Like</button>
+		
+		<button id="like" type="button" onclick="loadDoc()" class="btn btn-primary">Change Content</button>
+		{% for liker in likers %}
+			{% if request.user == liker.user_id %}
+			<a name="{{ content.id }}" style="font-size:48px;color: blue;" class="likin" id="co">
+				<i class="fa fa-thumbs-up" aria-hidden="true"></i>
+			</a>
+			{% else %}
+			<a name="{{ content.id }}" style="font-size:48px;color: black;" class="likin" id="co">
+				<i class="fa fa-thumbs-up" aria-hidden="true"></i>
+			</a>
+			{% endif %}
+		{% endfor%}
 	</div>
+
 </ul>
 <h3>Like(s)</h3>
-<ul>
-	{{ likes }}
-</ul>
+<div id="likes">
+	<ul>
+		{{ likes }}
+	</ul>
+</div>
 <a href="/community/{{ community_name }}/" class="btn btn-primary">To the List</a>
 <a href="/community/{{ community_name }}/write" class="btn btn-primary">Write</a>
 {% if request.user == contents.author_id %}
