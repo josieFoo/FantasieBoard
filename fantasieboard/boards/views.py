@@ -408,7 +408,7 @@ def like_button(request, article_pk, **kwargs):
 
 	if request.method == 'POST':
 		if request.user not in liker_list :
-			like_obj = Likes.objects.create(user_id=username)
+			like_obj = Likes.objects.create(article_id=queryset, user_id=username)
 			like_obj.save()
 			return redirect(queryset.get_absolute_url())
 		else:
