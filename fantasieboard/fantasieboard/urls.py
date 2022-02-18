@@ -39,5 +39,5 @@ urlpatterns = [
          views.delete_comment, name='delete_comment'),
     path('community/<str:community_name>/<int:article_pk>/edit_comment/<int:comment_pk>/',
          views.edit_comment, name='edit_comment'),
-    path(r'^$', views.like_button, name='like'),
+    path('like/<int:article_pk>/', views.like_button, name='like_article'),
 ]
