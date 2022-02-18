@@ -153,7 +153,7 @@ class Likes(models.Model):
 	# pk='id'
 	article_id = models.ForeignKey("Articles", on_delete=models.CASCADE)
 	user_id = models.ForeignKey(User, on_delete=models.CASCADE)
- 
+
 	class Meta:
 		unique_together = (('article_id', 'user_id'),)
 

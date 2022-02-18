@@ -2,24 +2,59 @@
 
 {% block content %}
 <h2>{{ contents.community_id }}</h2>
+
+<hr>
 <h3>Article</h3>
 <ul>
 	<p>(user)     {{ contents.author_id }}</p>
 	<p>(title)    {{ contents.title }}</p>
 	<p>(date)     {{ contents.written_on }}</p>
 	<p>(contents)<pre>{{ contents.rich_txt }}</pre></p>
-	
-</ul>
 
 <a href="/community/{{ community_name }}/" class="btn btn-primary">To the List</a>
-<a href="/community/{{ community_name }}/write" class="btn btn-primary">Write</a>
+<a href="/community/{{ community_name }}/write" class="btn btn-primary">Create a new post</a>
 {% if request.user == contents.author_id %}
 <a href="/community/{{ community_name }}/{{ article_pk }}/edit" class="btn btn-primary">Edit</a>
-<a href="/community/{{ community_name }}/{{ article_pk }}/delete" class="btn btn-primary">Delete</a>
-<button class="btn btn-primary">Like</button>
+<a href="/community/{{ community_name }}/{{ article_pk }}/delete" class="btn btn-primary">Delete</a>	
 {% else %}
 {% endif %}
+<p></p>
 
+<hr>
+<div class="like_section" style="text-align: left;margin-top:1%;">	
+	<!-- <button id="like" type="button" onclick="loadDoc()" class="btn btn-primary">Change Content</button> -->	
+	<form action="{% url 'like_article' article_pk %}" method="POST">
+		{% csrf_token %}
+		{% if request.user in likers %}
+		<button type="submit" name="article_pk" value="{{ article_pk }}" class="btn btn-primary">
+			Liked
+		</button>
+		{% else %}
+		<button type="submit" name="article_pk" value="{{ article_pk }}" class="btn btn-secondary">
+			Like
+		</button>
+		{% endif %}
+	</form>
+	<!-- {% if request.user in likers %}
+	<a name="{{ content.id }}" style="font-size:48px;color: blue;" class="likin" id="co">
+		<i class="fa fa-thumbs-up" aria-hidden="true"></i>
+	</a>
+	{% else %}
+	<a name="{{ content.id }}" style="font-size:48px;color: black;" class="likin" id="co">
+		<i class="fa fa-thumbs-up" aria-hidden="true"></i>
+	</a>
+	{% endif %}	 -->
+</div>
+
+</ul>
+<h3>Like(s)</h3>
+<div id="likes">
+	<ul>
+		{{ likes }}
+	</ul>
+</div>
+
+<hr>
 <h3>Comments</h3>
 <a href="/community/{{ community_name }}/{{ article_pk }}/reply#comment" class="btn btn-primary">Reply</a>
 <br>
@@ -38,9 +73,5 @@
 	{% endif %}
 	{% endfor %}
 </ul>
-
-<h3>Like(s)</h3>
-<ul>
-	{{ likes }}
-</ul>
+<hr>
 {% endblock %}

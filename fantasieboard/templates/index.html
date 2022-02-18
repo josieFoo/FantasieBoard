@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title> FantasieBoard </title>
 	{% load bootstrap5 %}
 	{% bootstrap_css %}
@@ -8,10 +10,28 @@
 	{% bootstrap_messages %}
 	{% load static %}
 	<link rel="stylesheet" href="{% static 'button.css' %}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="{% static 'like.js' %}"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 	<h1> Welcome on Board, Heroes! </h1>
-	
+	{% if request.user.is_authenticated %}
+	<a href="/" id="homepage" class="btn btn-primary">home</a>
+	<a href="/profile/{{ request.user }}" class="btn btn-primary">your profile</a>
+	<a href="/logout" class="btn btn-primary">Logout</a>
+	{% else %}
+	<a href="/" id="homepage" class="btn btn-primary">home</a>	
+	{% endif %}
+	<div class="dropdown">
+		<button class="dropbtn">community</button>
+		<div class="dropdown-content">
+			{% for community_name in community_list %}
+			<a href="/community/{{ community_name }}">{{ community_name }}</a>
+			{% endfor %}
+		</div>
+	</div>	
+	<hr>
 	{% block content %}
 
 	<p> We have here Heroes' shelter. </p>
@@ -23,6 +43,7 @@
 	{% endblock %}
 
 	<p></p>
+	<hr>
 	{% if request.user.is_authenticated %}
 	<a href="/" id="homepage" class="btn btn-primary">home</a>
 	<a href="/profile/{{ request.user }}" class="btn btn-primary">your profile</a>
