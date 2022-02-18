@@ -68,26 +68,24 @@ def article_view(request, article_pk, **kwargs):
 	comments and likes if exist.
 	"""
 
+	#if. else. 
 	community_list = Community.objects.all()
+	#if. else. 
 	queryset =  Articles.objects.get(id = article_pk)
 	article_id = article_pk
-	community_id = queryset.community_id	
+	community_id = queryset.community_id
+	#if. else. 
 	queryset_comments = Comments.objects.filter(article_id = article_pk).order_by("-written_on")
 	queryset_likes = Likes.objects.filter(article_id = article_pk)
-
-	liker_list=[]
-	for liker in queryset_likes:
-		liker_list.append(liker.user_id)
-	
-	comments_count = len(queryset_comments)
-	likes_count = len(queryset_likes)
-
+	liked = Likes.objects.filter(article_id = article_pk, user_id=request.user).exists()
+	comments_count = queryset_comments.count()
+	likes_count = queryset_likes.count()
 	context = {
 		"community_list": community_list,
 		"contents": queryset,
 		"comments": queryset_comments,
 		"comments_num" : comments_count, 
-		"likers": liker_list, 
+		"liked": liked, 
 		"likes": likes_count,
 		"article_pk": article_id,
 		"community_name": community_id,
@@ -327,6 +325,7 @@ def delete_comment(request, article_pk, comment_pk, **kwargs):
 
 	community_list = Community.objects.all()
 	article = Articles.objects.get(pk=article_pk)
+	#if else. (exists())
 	comments = Comments.objects.filter(article_id = article_pk).order_by("-written_on")
 	comment = Comments.objects.get(pk=comment_pk)
 	community_name = article.community_id
@@ -391,40 +390,17 @@ def like_button(request, article_pk, **kwargs):
 	handling like button
 	"""
  
-	community_list = Community.objects.all()
 	queryset =  Articles.objects.get(id = article_pk)
 	article_id = article_pk
-	community_id = queryset.community_id
-	queryset_comments = Comments.objects.filter(article_id = article_pk).order_by("-written_on")
-	queryset_likes = Likes.objects.filter(article_id = article_pk)
 	username = request.user
-
-	liker_list=[]
-	for liker in queryset_likes:
-		liker_list.append(liker.user_id)
-
-	comments_count = len(queryset_comments)
-	likes_count = len(queryset_likes)
+	liked = Likes.objects.filter(article_id = article_pk, user_id=username).exists()
 
 	if request.method == 'POST':
-		if request.user not in liker_list :
+		if not liked :
 			like_obj = Likes.objects.create(article_id=queryset, user_id=username)
 			like_obj.save()
-			return redirect(queryset.get_absolute_url())
 		else:
 			like_obj = Likes.objects.filter(article_id=article_id, user_id=username)
-			like_obj.delete()
-			return redirect(queryset.get_absolute_url())
+			like_obj.delete()			
 
-	context = {
-		"community_list": community_list,
-		"contents": queryset,
-		"comments": queryset_comments,
-		"comments_num" : comments_count, 
-		"likers": liker_list, 
-		"likes": likes_count,
-		"article_pk": article_id,
-		"community_name": community_id,
-	}
-
-	return render(request, "article_detail.html", context)
+	return redirect(queryset.get_absolute_url())
