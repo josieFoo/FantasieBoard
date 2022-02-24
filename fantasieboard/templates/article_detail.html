@@ -21,8 +21,16 @@
 <p></p>
 
 <hr>
+
+<h3>Like(s)</h3>
+<div id="likes">
+	<ul>
+		{{ likes }}
+	</ul>
+</div>
+
 <div class="like_section" style="text-align: left;margin-top:1%;">	
-	<!-- <button id="like" type="button" onclick="loadDoc()" class="btn btn-primary">Change Content</button> -->	
+	
 	<form action="{% url 'like_article' article_pk %}" method="POST">
 		{% csrf_token %}
 		{% if liked %}
@@ -38,16 +46,16 @@
 </div>
 
 </ul>
-<h3>Like(s)</h3>
-<div id="likes">
-	<ul>
-		{{ likes }}
-	</ul>
-</div>
+
 
 <hr>
-<h3>Comments</h3>
-<a href="/community/{{ community_name }}/{{ article_pk }}/reply#comment" class="btn btn-primary">Reply</a>
+<h3>Comment(s)</h3>
+	<ul>
+	{{ comments_num }}	
+	</ul>
+	<ul>
+	<a href="/community/{{ community_name }}/{{ article_pk }}/reply#comment" class="btn btn-primary">Reply</a>
+	</ul>
 <br>
 <p></p>
 <ul>
