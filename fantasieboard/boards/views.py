@@ -13,6 +13,14 @@ from .models import *
 from .forms import CommentForm, RegisterUserForm 
 from .forms import ArticleForm, ArticleUserForm
 
+def community_not_found_404(request, *args, **kwargs):
+	
+	community_list = Community.objects.all()
+	if not community_list.exists():
+		return redirect('community')
+
+	return redirect('community')
+
 def home_view(request, *args, **kwargs):
 	"""
 	home controller.
@@ -68,18 +76,23 @@ def article_view(request, article_pk, **kwargs):
 	comments and likes if exist.
 	"""
 
-	#if. else. 
+	object_404 = Articles.objects.filter(id = article_pk)
+	if not object_404.exists():
+		return redirect('community')
+
 	community_list = Community.objects.all()
-	#if. else. 
+	
 	queryset =  Articles.objects.get(id = article_pk)
 	article_id = article_pk
 	community_id = queryset.community_id
-	#if. else. 
+	
 	queryset_comments = Comments.objects.filter(article_id = article_pk).order_by("-written_on")
 	queryset_likes = Likes.objects.filter(article_id = article_pk)
 	liked = Likes.objects.filter(article_id = article_pk, user_id=request.user).exists()
 	comments_count = queryset_comments.count()
 	likes_count = queryset_likes.count()
+
+
 	context = {
 		"community_list": community_list,
 		"contents": queryset,
@@ -176,7 +189,7 @@ def logout_view(request, *args, **kwargs):
 	community_list = Community.objects.all()
 	context = { "username": username,
 				"community_list": community_list,
-    }
+	}
 	logout(request)
 	return render(request, "logout.html", context)
 
@@ -221,10 +234,16 @@ def write_article(request, community_name, **kwargs):
 	return render(request, "write_article.html", context)
 
 @login_required(login_url='login')
-def edit_article(request, article_pk, **kwargs):
+def edit_article(request, community_name, article_pk, **kwargs):
 	"""
 	rendert edit windows
 	"""
+
+	try:
+		article = Articles.objects.get(id=article_pk)
+	except:
+		community = Community.objects.get(community_name=community_name)
+		return redirect(community.get_absolute_url())
 
 	community_list = Community.objects.all()
 	article = Articles.objects.get(id=article_pk)
@@ -258,14 +277,19 @@ def edit_article(request, article_pk, **kwargs):
 	return render(request, 'write_article.html', context)
 
 @login_required(login_url='login')
-def delete_article(request, article_pk, **kwargs):
+def delete_article(request, community_name, article_pk, **kwargs):
 	""" 
  	assures whether the article should be deleted.
 	On confirm the article will be deleted.
  	"""
 
+	try:
+		article = Articles.objects.get(id=article_pk)
+	except:
+		community = Community.objects.get(community_name=community_name)
+		return redirect(community.get_absolute_url())
+
 	community_list = Community.objects.all()
-	article = Articles.objects.get(id=article_pk)
 	community = article.community_id
 
 	if request.method == 'POST':
@@ -273,20 +297,25 @@ def delete_article(request, article_pk, **kwargs):
 		return redirect(community.get_absolute_url())
 
 	context = {
-    		'article': article, 
+			'article': article, 
 			'community_name': community,
 			'article_pk': article_pk,
 			"community_list": community_list,
-    }
+	}
 	return render(request, 'delete_article.html', context)
 
 @login_required(login_url='login')
-def reply_article(request, article_pk, **kwargs):
+def reply_article(request, community_name, article_pk, **kwargs):
 	"""
 	renders form for a comment.
 	"""
 	
-	queryset =  Articles.objects.get(id = article_pk)
+	try:
+		queryset = Articles.objects.get(id=article_pk)
+	except:
+		community = Community.objects.get(community_name=community_name)
+		return redirect(community.get_absolute_url())
+	
 	community_list = Community.objects.all()
 	article_id = article_pk
 	community_id = queryset.community_id
@@ -325,10 +354,13 @@ def delete_comment(request, article_pk, comment_pk, **kwargs):
 
 	community_list = Community.objects.all()
 	article = Articles.objects.get(pk=article_pk)
-	#if else. (exists())
 	comments = Comments.objects.filter(article_id = article_pk).order_by("-written_on")
-	comment = Comments.objects.get(pk=comment_pk)
+	#comment = Comments.objects.get(pk=comment_pk)
+	comment = Comments.objects.filter(pk=comment_pk)
 	community_name = article.community_id
+
+	if not comment.exists():
+		return redirect(article.get_absolute_url())
 
 	context ={ 
 				'article': article,
@@ -350,9 +382,13 @@ def edit_comment(request, article_pk, comment_pk, **kwargs):
 	""""
 	edit comment
 	"""
-	
-	community_list = Community.objects.all()
+
+	object_404 = Comments.objects.filter(pk=comment_pk)
 	queryset =  Articles.objects.get(id = article_pk)
+	if not object_404.exists():
+		return redirect(queryset.get_absolute_url())	
+
+	community_list = Community.objects.all()
 	article_id = article_pk
 	community_id = queryset.community_id
 	queryset_comments = Comments.objects.filter(article_id = article_pk).order_by("-written_on")

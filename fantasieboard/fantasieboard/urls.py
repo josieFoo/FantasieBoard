@@ -40,4 +40,9 @@ urlpatterns = [
     path('community/<str:community_name>/<int:article_pk>/edit_comment/<int:comment_pk>/',
          views.edit_comment, name='edit_comment'),
     path('like/<int:article_pk>/', views.like_button, name='like_article'),
+    
+    path('community//', views.community_not_found_404, name='not_found_c'),
+    path('community/<str:community_name>//', views.community_article, name='community_detail'),
+    path('community/<str:community_name>/<int:article_pk>/delete_comment//', 
+         views.article_view, name='article_detail'),
 ]
