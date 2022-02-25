@@ -347,15 +347,19 @@ def reply_article(request, community_name, article_pk, **kwargs):
 	return render(request, "reply.html", context)
 
 @login_required(login_url='login')
-def delete_comment(request, article_pk, comment_pk, **kwargs):
+def delete_comment(request, community_name, article_pk, comment_pk, **kwargs):
 	"""
 	delete comment
 	"""
 
+	try:
+		article = Articles.objects.get(id=article_pk)
+	except:
+		community = Community.objects.get(community_name=community_name)
+		return redirect(community.get_absolute_url())
+
 	community_list = Community.objects.all()
-	article = Articles.objects.get(pk=article_pk)
 	comments = Comments.objects.filter(article_id = article_pk).order_by("-written_on")
-	#comment = Comments.objects.get(pk=comment_pk)
 	comment = Comments.objects.filter(pk=comment_pk)
 	community_name = article.community_id
 
@@ -378,13 +382,18 @@ def delete_comment(request, article_pk, comment_pk, **kwargs):
 	return render(request, 'delete_comment.html', context)
 
 @login_required(login_url='login')
-def edit_comment(request, article_pk, comment_pk, **kwargs):
+def edit_comment(request, community_name, article_pk, comment_pk, **kwargs):
 	""""
 	edit comment
 	"""
 
+	try:
+		queryset = Articles.objects.get(id=article_pk)
+	except:
+		community = Community.objects.get(community_name=community_name)
+		return redirect(community.get_absolute_url())
+
 	object_404 = Comments.objects.filter(pk=comment_pk)
-	queryset =  Articles.objects.get(id = article_pk)
 	if not object_404.exists():
 		return redirect(queryset.get_absolute_url())	
 
@@ -425,8 +434,12 @@ def like_button(request, article_pk, **kwargs):
 	"""
 	handling like button
 	"""
- 
-	queryset =  Articles.objects.get(id = article_pk)
+
+	try:
+		queryset = Articles.objects.get(id=article_pk)
+	except:
+		return redirect('community')
+
 	article_id = article_pk
 	username = request.user
 	liked = Likes.objects.filter(article_id = article_pk, user_id=username).exists()
