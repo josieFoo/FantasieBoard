@@ -56,7 +56,12 @@ def community_article(request, community_name, **kwargs):
 
 	community_list = Community.objects.all()
 	h2 = community_name
-	community_pk = Community.objects.get(community_name = community_name).pk
+	
+	try:
+		community_pk = Community.objects.get(community_name = community_name).pk
+	except:
+		return redirect('community')
+
 	queryset = Articles.objects.filter(community_id = community_pk).order_by("-written_on")
 	pinned_set = queryset.filter(pinned = True)
 	unpinned_set = queryset.filter(pinned = False)
