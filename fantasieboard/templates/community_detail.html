@@ -11,16 +11,16 @@
 <hr>
 <h3>Articles</h3>
 <ul>
-	{% for article in pinned_articles %}
+	{% for article, counter in pinned_context %}
 	<li><a href="/community/{{ article.community_id }}/{{ article.pk }}">
-		{{ article.title }}, {{ article.author_id }}, {{article.written_on}}</a>
+		{{ article.title }}, {{ article.author_id }}, {{article.written_on}} [{{ counter }}]</a>
 	</li>
 	{% endfor %}	
 </ul>
 <ul>
-	{% for article in unpinned_articles %}
+	{% for article, counter in unpinned_context %}
 	<li><a href="/community/{{ article.community_id }}/{{ article.pk }}">
-		{{ article.title }}, {{ article.author_id }}, {{article.written_on}}</a>
+		{{ article.title }}, {{ article.author_id }}, {{article.written_on}} [{{ counter }}]</a>
 	</li>
 	{% endfor %}
 </ul>

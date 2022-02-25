@@ -58,14 +58,33 @@ def community_article(request, community_name, **kwargs):
 	h2 = community_name
 	community_pk = Community.objects.get(community_name = community_name).pk
 	queryset = Articles.objects.filter(community_id = community_pk).order_by("-written_on")
-	unpinned_set = queryset.filter(pinned = False)
 	pinned_set = queryset.filter(pinned = True)
+	unpinned_set = queryset.filter(pinned = False)
+
+	pinned_comment_counter = []
+	for query in pinned_set:
+		article_pk = query.pk
+		pinned_set_comments = Comments.objects.filter(article_id = article_pk).order_by("-written_on")
+		comment_number = pinned_set_comments.count()
+		pinned_comment_counter.append(comment_number)
+	pinned_context = zip(pinned_set, pinned_comment_counter)
+ 
+	unpinned_comment_counter = []
+	for query in unpinned_set:
+		article_pk = query.pk
+		unpinned_set_comments = Comments.objects.filter(article_id = article_pk).order_by("-written_on")
+		comment_number = unpinned_set_comments.count()
+		unpinned_comment_counter.append(comment_number)
+	unpinned_context = zip(unpinned_set, unpinned_comment_counter)
+
 	context = {
 		"articles": queryset,
 		"community_name": h2,
 		"pinned_articles": pinned_set,
 		"unpinned_articles": unpinned_set,
 		"community_list": community_list,
+		"pinned_context": pinned_context,
+		"unpinned_context": unpinned_context,
 	}
 
 	return render(request, "community_detail.html", context)
@@ -203,7 +222,7 @@ def write_article(request, community_name, **kwargs):
 	community_list = Community.objects.all()
 	community = Community.objects.get(community_name = community_name)
 	staff = username.is_staff
-	# Es sollte ein Objekt sein.
+	
 	if staff:
 		form = ArticleForm()
 	else:
