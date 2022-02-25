@@ -23,7 +23,7 @@
 	{% csrf_token %}
 	
 	{{ form.as_p }}
-	<input type="submit" name="write" class="btn">
+	<input type="submit" name="write" class="btn btn-primary">
 	<a href="/community/{{ community_name }}/{{ article_pk }}/" class="btn btn-primary">Cancel</a>
 </form>
 <ul>

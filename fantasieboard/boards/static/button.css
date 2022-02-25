@@ -1,3 +1,10 @@
+a:hover, a:visited, a:link, a:active {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	text-decoration: none;
+	}
+
 hr {
 	display: block;
 	margin-top: 0.5em;
