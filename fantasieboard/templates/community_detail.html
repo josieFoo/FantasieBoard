@@ -13,7 +13,7 @@
 <ul>
 	{% for article, counter in pinned_context %}
 	<li><a href="/community/{{ article.community_id }}/{{ article.pk }}">
-		{{ article.title }}, {{ article.author_id }}, {{article.written_on}} [{{ counter }}]</a>
+		<b>[pinned]{{ article.title }}, {{ article.author_id }}, {{article.written_on}} [{{ counter }}]</b></a>
 	</li>
 	{% endfor %}	
 </ul>
