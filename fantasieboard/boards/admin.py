@@ -6,8 +6,8 @@ from .models import Community, Community_moderator, Articles, Comments, Likes
 class ArticlesAdmin(admin.ModelAdmin):
 	list_display = ('author_id', 'community_id', 'title', 'written_on')
 	list_filter = ('pinned',)
-	search_fields = ['author_id', 'community_id', 'title']
- 
+	search_fields = ['author_id__username', 'title', 'community_id__community_name']
+	
 class CommunityAdmin(admin.ModelAdmin):
 	list_display = ('community_name',)
 	list_filter = ()
@@ -16,7 +16,7 @@ class CommunityAdmin(admin.ModelAdmin):
 class CommentsAdmin(admin.ModelAdmin):
 	list_display = ('article_id', 'user_id', 'written_on')
 	list_filter = ()
-	search_fields = ['article_id']
+	search_fields = ['article_id__title', 'user_id__username', 'rich_txt']
 
 admin.site.register(Community, CommunityAdmin)
 admin.site.register(Community_moderator)

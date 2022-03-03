@@ -124,8 +124,8 @@ class Articles(models.Model):
 					   )
 
 	def __str__(self) -> str:
-		return f"{str(self.community_id)}_{str(self.title)}"
-
+		#return f"{str(self.community_id)}_{str(self.title)}"
+		return str(self.title)
 
 class Comments(models.Model):
 	"""
@@ -140,8 +140,8 @@ class Comments(models.Model):
 	rich_txt = models.TextField(max_length=100, blank=False, default=" ")
 	
 	def __str__(self):
-		return f"{str(self.pk)}_{str(self.article_id)}"
-
+		# return f"{str(self.pk)}_{str(self.article_id)}"
+		return str(self.article_id)
 
 class Likes(models.Model):
 	"""
