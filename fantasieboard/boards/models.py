@@ -3,6 +3,7 @@ from __future__ import annotations
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.utils import timezone
 
 #class Users(models.Model):
 #	"""
@@ -113,7 +114,13 @@ class Articles(models.Model):
 	pinned = models.BooleanField(null=False, default=False)
 	written_on = models.DateTimeField(auto_now=True)
 	rich_txt = models.TextField(max_length=400, blank=False, default=" ")
-	
+	deleted = models.BooleanField(null=False, default=False)
+	deleteed_on = models.DateTimeField()
+
+	def delete_on(self):
+		self.deleted = True
+		self.deleted_on = timezone.now()
+
 	def get_absolute_url(self):
 		
 		return reverse('article_detail', 
