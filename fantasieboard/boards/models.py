@@ -115,7 +115,7 @@ class Articles(models.Model):
 	written_on = models.DateTimeField(auto_now=True)
 	rich_txt = models.TextField(max_length=400, blank=False, default=" ")
 	deleted = models.BooleanField(null=False, default=False)
-	deleteed_on = models.DateTimeField()
+	deleted_on = models.DateTimeField(default=timezone.now)
 
 	def delete_on(self):
 		self.deleted = True
